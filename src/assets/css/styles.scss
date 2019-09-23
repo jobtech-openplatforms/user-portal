@@ -1,0 +1,108 @@
+// @import "assets/css/checkbox-switch.css";
+
+*{
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Avenir", Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: left;
+  color: #000000;
+  background: #ececec;
+  padding: 0;
+  margin: 0;
+}
+#page-container {
+  padding: 20px;
+}
+
+.page-content{
+  width: 100%;
+  max-width: 1024px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+h1 {
+  font-size: 60px;
+  margin: 0 0 20px 0;
+}
+
+h2 {
+  font-size: 30px;
+  margin: 0 0 10px 0;
+}
+
+h3 {
+  font-size: 22px; 
+  margin: 0 0 5px 0;
+}
+
+h4 {
+  font-size: 18px; 
+  margin: 0 0 5px 0;
+}
+
+p {
+  margin: 10px 0 10px 0;
+}
+
+.panel {
+  background: white;
+  border-radius: 6px;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25);
+  padding: 20px;
+  margin-bottom: 10px;
+}
+
+.button{
+    background: #ff6b00;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 10px 30px;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.button.large-button{
+  padding: 20px 40px;
+  font-size: 22px;
+}
+
+.icon-button {
+  background: none;
+  border: none;
+}
+.icon-button i {
+  font-size: 26px;
+}
+
+
+.fade-enter-active {
+  transition: all 5s;
+  background: #ffff00;
+  overflow: hidden;
+}
+.fade-leave-active {
+  transition: all .3s;
+}
+.fade-enter {
+  opacity: 0;
+  height: 0;
+  max-height: 0px;
+}
+.fade-enter-to {
+  opacity: 1;
+  max-height: 100px;
+  height: 100px;
+}
+.fade-leave-to {
+  opacity: 0;
+  max-height: 0px;
+}
+.fade-complete-leave-active {
+  position: absolute;
+}
