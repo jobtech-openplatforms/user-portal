@@ -32,7 +32,6 @@ export default new Vuex.Store({
             acc[prop_name] = (state: any, action: any) => {
                 action.execute(state);
             }
-
             return acc;
         },
         {}

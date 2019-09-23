@@ -55,6 +55,7 @@ import SliderCheckbox from "./SliderCheckbox.vue";
 import { Component, Prop, Vue } from "vue-property-decorator";
 import { ConnectionData } from "../datatypes/ConnectionData";
 import { Actions } from "../Actions";
+import { Action } from "vuex";
 
 @Component({
   components: {
@@ -65,11 +66,11 @@ export default class ConnectionDisplay extends Vue {
   @Prop()
   public connection!: ConnectionData;
 
-  private dispatch: any;
+  private dispatch: (a: Actions.ActionBase) => void;
 
   constructor() {
     super();
-    this.dispatch = <any>this.$store.dispatch;
+    this.dispatch = this.$store.dispatch;
   }
 
   public onChangeActive(value: boolean) {
