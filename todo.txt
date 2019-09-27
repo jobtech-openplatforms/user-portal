@@ -1,0 +1,26 @@
+DONE:
+x proper login
+x hämta in state från server
+x hantera logout
+x hantera tom lista
+x dubbelkolla spara copy
+x styling
+  x knappar i spara dialog
+  x favicons
+  x focus areas
+x mobile responsive
+  x start page
+  x header
+  x icon-sizes
+  x appplattconnections 
+  x app icons
+
+TODO:
+- skicka in nytt state till server
+  x generera change data
+  - uppdatera app state
+- bug: loader när man sparar
+- deploy
+  - bygg ut site
+  - environments settings
+  - koppla mot separat app auth0
