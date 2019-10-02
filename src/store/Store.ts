@@ -1,27 +1,18 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
-import { ConnectionData } from './datatypes/ConnectionData';
-import { ApplicationData } from './datatypes/ApplicationData';
-import { TypedState } from './TypedState';
-import { ApplicationConnectionData } from './datatypes/ApplicationConnectionData';
+import { TypedState } from '../datatypes/TypedState';
 import { Actions } from './Actions';
 import { Mutations } from './Mutations';
+import { TypedGetters } from './TypedContext';
 
 Vue.use(Vuex);
 
-console.log("1", Actions);
-console.log("2", Object.getOwnPropertyNames(Actions));
-
 export default new Vuex.Store({
-    state: {
-        isLoggedIn: false,
-        connectedPlatforms: [],
-        connectedApplications: [],
-    } as TypedState,
+    state: new TypedState(),
     mutations: Object.getOwnPropertyNames(Mutations).reduce( // add mutations based on Mutations class def
         (acc: any, prop_name) => {
             acc[prop_name] = (state: any, mutation: any) => {
-                mutation.execute(state);
+                return mutation.execute(state);
             }
             return acc;
         },
@@ -30,11 +21,12 @@ export default new Vuex.Store({
     actions: Object.getOwnPropertyNames(Actions).reduce( // add mutations based on Actions class def
         (acc: any, prop_name: string) => {
             acc[prop_name] = (state: any, action: any) => {
-                action.execute(state);
+                return action.execute(state);
             }
             return acc;
         },
         {}
-    )
+    ),
+    getters: new TypedGetters() as any
 });
 

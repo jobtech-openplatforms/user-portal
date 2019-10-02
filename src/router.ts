@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import Router from 'vue-router';
+import AuthCallback from './views/AuthCallback.vue';
 import Start from './views/Start.vue';
 import MyConnections from './views/MyConnections.vue';
 
@@ -18,6 +19,11 @@ export default new Router({
       path: '/my-connections',
       name: 'my-connections',
       component: MyConnections,
+    },
+    {
+      path: '/cvdataauth',
+      name: 'Auth callback',
+      component: AuthCallback,
     },
   ],
 });

@@ -4,17 +4,22 @@
       <img v-if="application.logo" v-bind:src="application.logo" />
     </div>
     <div class="application-content-container">
-      <h3>{{ application.name }}</h3>
-      <p>{{ application.description }}</p>
+      <div class="app-info-container">
+        <h3 class="overflow-elipsis">{{ application.name }}</h3>
+        <p>{{ application.description }}</p>
+      </div>
 
-      <div class="connected-platforms-container">
-        <h3 @click="onToggleConnectionList()">
+      <div class="connected-platforms-container" v-if="noOfConnections>0">
+        <h4 @click="onToggleConnectionList()">
           <button class="exapand-button icon-button">
             <i v-if="!isPlatformsExpanded" class="far fa-chevron-up"></i>
             <i v-if="isPlatformsExpanded" class="far fa-chevron-down"></i>
           </button>
-          Sharing {{noOfActiveConnections}} of {{noOfConnections}} data sources
-        </h3>
+          <span v-if="noOfConnections===1">Can access 1 data source</span>
+          <span
+            v-if="noOfConnections>1"
+          >Can access {{noOfActiveConnections}} of {{noOfConnections}} data sources</span>
+        </h4>
         <FadeTransition>
           <div v-if="isPlatformsExpanded" class="connection-list">
             <div
@@ -26,12 +31,13 @@
                 <img v-if="platform.logo" v-bind:src="platform.logo" />
               </div>
               <div class="connection-content-container">
-                <h4>{{ platform.name }}</h4>
+                <h4 class="overflow-elipsis">{{ platform.name }}</h4>
               </div>
               <div>
-                <SliderCheckbox
+                <b-switch
+                  class="is-large"
                   v-model="platform.isActive"
-                  v-on:change="onChangeActive(platformId, $event.target.checked)"
+                  v-on:change.native="onChangeActive(platform.id, $event.target.checked)"
                 />
               </div>
             </div>
@@ -39,11 +45,11 @@
         </FadeTransition>
       </div>
     </div>
-    <div class="application-menu-container">
+    <!-- <div class="application-menu-container">
       <button class="remove-button icon-button" @click="onRemove()">
         <i class="far fa-times"></i>
       </button>
-    </div>
+    </div>-->
   </div>
 </template>
 
@@ -61,6 +67,15 @@
   margin-right: 20px;
   overflow: hidden;
 }
+@media (max-width: 600px) {
+  .image-container {
+    width: 50px;
+    height: 50px;
+    min-width: 50px;
+    margin-right: 10px;
+  }
+}
+
 .image-container img {
   width: 100%;
   height: 100%;
@@ -68,7 +83,7 @@
 .application-content-container,
 .connection-content-container {
   width: 100%;
-  margin-right: 20px;
+  overflow: hidden;
 }
 .application-active-container {
   margin-right: 20px;
@@ -99,6 +114,13 @@
   height: 60px;
   min-width: 60px;
 }
+@media (max-width: 600px) {
+  .platform-connection .image-container {
+    width: 30px;
+    height: 30px;
+    min-width: 30px;
+  }
+}
 </style>
 
 <script lang="ts">
@@ -106,10 +128,11 @@ import FadeTransition from "./FadeTransition.vue";
 import SliderCheckbox from "./SliderCheckbox.vue";
 import { Component, Prop, Vue } from "vue-property-decorator";
 import { ApplicationData } from "../datatypes/ApplicationData";
+import { ActionBase } from "../store/ActionBase";
+import { Actions } from "../store/Actions";
 
 @Component({
   components: {
-    SliderCheckbox,
     FadeTransition
   }
 })
@@ -117,10 +140,13 @@ export default class ApplicationDisplay extends Vue {
   @Prop()
   public application!: ApplicationData;
 
-  public isPlatformsExpanded = false;
+  public isPlatformsExpanded = true;
+
+  private dispatch: (a: ActionBase) => void;
 
   constructor() {
     super();
+    this.dispatch = this.$store.dispatch;
   }
 
   get noOfConnections() {
@@ -132,7 +158,13 @@ export default class ApplicationDisplay extends Vue {
   }
 
   public onChangeActive(platformId: string, value: boolean) {
-    console.log(platformId, "changed to:", value, value === true);
+    this.dispatch(
+      new Actions.SetApplicationConnectionActive(
+        this.application.id,
+        platformId,
+        value
+      )
+    );
   }
 
   public onToggleConnectionList() {

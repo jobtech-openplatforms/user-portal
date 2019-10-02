@@ -5,5 +5,6 @@ export class ApplicationData {
     public logo = '';
     public name = '';
     public description = '';
+    public url = '';
     public connectedPlatforms: ApplicationConnectionData[] = [];
 }

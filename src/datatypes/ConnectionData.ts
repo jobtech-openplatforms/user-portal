@@ -3,5 +3,6 @@ export class ConnectionData {
     public logo = '';
     public name = '';
     public description = '';
+    public url = '';
     public isActive = false;
 }
