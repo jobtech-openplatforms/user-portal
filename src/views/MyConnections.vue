@@ -67,11 +67,13 @@ export default class MyConnections extends Vue {
 
   private mounted() {
     // TODO: setup proper route guards
-    if (this.$auth.isAuthenticated()) {
-      this.fetchData();
-    } else {
-      this.$router.push("/");
-    }
+    setTimeout(() => {
+      if (this.$auth.isAuthenticated()) {
+        this.fetchData();
+      } else {
+        this.$router.push("/");
+      }
+    }, 0);
   }
 
   public fetchData() {

@@ -53,9 +53,8 @@ export namespace Actions {
         execute(context: TypedContext) {
             return new Promise((resolve, reject) => {
                 context.commit(new Mutations.ResetState());
-
                 this.auth.getAccessToken().then((accessToken) => {
-                    axios.get("https://cvdataapi.azurewebsites.net/api/Platform/connection-state", {
+                    axios.get(process.env.VUE_APP_CV_DATA_API_PATH, {
                         headers: {
                             Accept: 'application/json',
                             Authorization: `Bearer ${accessToken}`
@@ -198,11 +197,13 @@ export namespace Actions {
                         connectedApps: connectedApps
                     }
                     stateUpdate.platformConnectionStateUpdates.push(platformInfo);
+                    if (platformInfo.removeConnection) {
+                        delete platformInfo.connectedApps;
+                    }
                 });
 
-                console.log("saving state changes:", stateUpdate);
                 this.auth.getAccessToken().then((accessToken) => {
-                    axios.post("https://cvdataapi.azurewebsites.net/api/Platform/connection-state",
+                    axios.post(process.env.VUE_APP_CV_DATA_API_PATH,
                         stateUpdate,
                         {
                             headers: {

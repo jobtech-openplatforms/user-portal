@@ -2,16 +2,12 @@
 import auth0 from 'auth0-js'
 import { EventEmitter } from 'events';
 
-const clientId = 'g7pB2vgb5l8BQdYN56J3HP3VGYh9Bv3P';
-const baseUrl = 'http://localhost:4200';
-const domain = 'cvdata.eu'
-
 // exchange the object with your own from the setup step above.
 const webAuth = new auth0.WebAuth({
-    domain: domain + '.auth0.com',
-    audience: "cvdata.se",
-    redirectUri: baseUrl + '/cvdataauth',
-    clientID: clientId,
+    domain: process.env.VUE_APP_AUTH_DOMAIN,// domain + '.auth0.com',
+    audience: process.env.VUE_APP_AUTH_AUDIENCE,//"cvdata.se",
+    redirectUri: process.env.VUE_APP_AUTH_REDIRECT,//baseUrl + '/cvdataauth',
+    clientID: process.env.VUE_APP_AUTH_CLIENT_ID,//clientId,
     responseType: 'id_token token',
     scope: 'openid profile name'
 })
@@ -43,7 +39,6 @@ export default class AuthService extends EventEmitter {
                     reject(err);
                 } else {
                     this.localLogin(authResult);
-                    console.log(authResult)
                     resolve(authResult.idToken);
                 }
             });

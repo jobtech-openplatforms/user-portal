@@ -86,13 +86,15 @@ export default class ConfirmSaveModal extends Vue {
 
     this.dispatch(new Actions.SaveState(this.state, this.$auth)).then(
       () => {
-        this.$emit("close", this.data);
-        setTimeout(() => {
-          loadingComponent.close();
-          this.$buefy.toast.open({
-            message: `Your settings are saved`
-          });
-        }, 1500);
+        this.$buefy.toast.open({
+          message: `Your settings are saved, updateing data`
+        });
+        this.dispatch(new Actions.LoadInitialState(this.$auth)).then(() => {
+          this.$emit("close", this.data);
+          setTimeout(() => {
+            loadingComponent.close();
+          }, 1500);
+        });
       },
       () => {
         loadingComponent.close();

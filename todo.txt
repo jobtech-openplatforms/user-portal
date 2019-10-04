@@ -18,9 +18,10 @@ x mobile responsive
 TODO:
 - skicka in nytt state till server
   x generera change data
-  - uppdatera app state
+  - uppdatera app state efter updatering
 - bug: loader när man sparar
 - deploy
   - bygg ut site
   - environments settings
+  - deploy till azure
   - koppla mot separat app auth0
