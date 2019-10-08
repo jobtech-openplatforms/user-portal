@@ -92,7 +92,7 @@ export default class App extends Vue {
 
   private logout() {
     this.dispatch(new Actions.Logout(this.$auth));
-    this.$router.push("/");
+    // this.$router.push("/");
   }
 }
 </script>

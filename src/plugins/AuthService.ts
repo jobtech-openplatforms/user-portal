@@ -55,7 +55,13 @@ export default class AuthService extends EventEmitter {
         this.accessToken = authResult.accessToken;
         this.accessTokenExpiry = new Date(Date.now() + authResult.expiresIn * 1000).getTime();
 
-        localStorage.setItem(localStorageKey, 'true');
+        localStorage.setItem(localStorageKey, JSON.stringify({
+            idToken: this.idToken,
+            profile: this.profile,
+            tokenExpiry: this.tokenExpiry,
+            accessToken: this.accessToken,
+            accessTokenExpiry: this.accessTokenExpiry
+        }));
 
         this.emit(loginEvent, {
             loggedIn: true,
@@ -90,19 +96,25 @@ export default class AuthService extends EventEmitter {
         this.accessToken = null;
         this.accessTokenExpiry = 0;
 
-        // webAuth.logout({
-        //     returnTo: window.location.origin
-        // });
+        webAuth.logout({
+            returnTo: window.location.origin + "/"
+        });
 
         this.emit(loginEvent, { loggedIn: false });
     }
 
     isAuthenticated() {
-        return (
-            this.tokenExpiry !== null &&
-            Date.now() < this.tokenExpiry &&
-            localStorage.getItem(localStorageKey) === 'true'
-        );
+        let localData = localStorage.getItem(localStorageKey);
+        if (localData) {
+            let parsedData = JSON.parse(localData);
+            this.idToken = parsedData.idToken;
+            this.tokenExpiry = parseInt(parsedData.tokenExpiry);
+            this.profile = parsedData.profile;
+            this.accessToken = parsedData.accessToken;
+            this.accessTokenExpiry = parsedData.accessTokenExpiry;
+            return true;
+        }
+        return false;
     }
 
     isAccessTokenValid() {
