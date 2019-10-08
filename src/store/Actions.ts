@@ -27,11 +27,10 @@ export namespace Actions {
     }
 
     export class LoginCompleted extends ActionBase {
-        constructor(private router: VueRouter) { super(); }
+        constructor() { super(); }
         execute(context: TypedContext) {
             return new Promise((resolve, reject) => {
                 context.commit(new Mutations.SetLoginStatus(true));
-                this.router.push('my-connections'); //TODO: get route from local storage or url
                 resolve();
             });
         }
