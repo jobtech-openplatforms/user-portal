@@ -25,6 +25,7 @@ export default class AuthService extends EventEmitter {
     // Starts the user login flow
     login(customState: any = null) {
         return new Promise((resolve, reject) => {
+            console.log("login2a")
             webAuth.authorize({
                 appState: customState
             });

@@ -20,6 +20,7 @@ export namespace Actions {
         execute(context: TypedContext) {
             return new Promise((resolve, reject) => {
                 this.auth.login();
+                console.log("login2")
                 resolve();
             });
         }
