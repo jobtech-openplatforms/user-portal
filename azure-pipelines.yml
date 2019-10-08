@@ -5,7 +5,7 @@
 
 trigger:
 - master
-- deploy
+- release
 
 pool:
   vmImage: 'ubuntu-latest'
