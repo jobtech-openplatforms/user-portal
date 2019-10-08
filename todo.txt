@@ -20,8 +20,9 @@ TODO:
   x generera change data
   - uppdatera app state efter updatering
 - bug: loader när man sparar
+- proper logout
 - deploy
-  - bygg ut site
-  - environments settings
+  x bygg ut site
+  x environments settings
   - deploy till azure
   - koppla mot separat app auth0
