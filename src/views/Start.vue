@@ -74,7 +74,6 @@ export default class Start extends Vue {
   public mounted() {}
 
   public onLogin() {
-    console.log('onLogin!');
     this.dispatch(new Actions.Login(this.$auth));
   }
 }
