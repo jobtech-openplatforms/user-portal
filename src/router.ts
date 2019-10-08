@@ -21,7 +21,7 @@ export default new Router({
       component: MyConnections,
     },
     {
-      path: '/cvdataauth',
+      path: '/auth',
       name: 'Auth callback',
       component: AuthCallback,
     },

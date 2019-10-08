@@ -6,7 +6,7 @@ import { EventEmitter } from 'events';
 const webAuth = new auth0.WebAuth({
     domain: process.env.VUE_APP_AUTH_DOMAIN,// domain + '.auth0.com',
     audience: process.env.VUE_APP_AUTH_AUDIENCE,//"cvdata.se",
-    redirectUri: process.env.VUE_APP_AUTH_REDIRECT,//baseUrl + '/cvdataauth',
+    redirectUri: window.location.origin + process.env.VUE_APP_AUTH_REDIRECT,//baseUrl + '/cvdataauth',
     clientID: process.env.VUE_APP_AUTH_CLIENT_ID,//clientId,
     responseType: 'id_token token',
     scope: 'openid profile name'
@@ -25,7 +25,6 @@ export default class AuthService extends EventEmitter {
     // Starts the user login flow
     login(customState: any = null) {
         return new Promise((resolve, reject) => {
-            console.log("login2a")
             webAuth.authorize({
                 appState: customState
             });
