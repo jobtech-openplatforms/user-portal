@@ -23,7 +23,9 @@ export default class AuthCallback extends Vue {
 
   mounted() {
     this.auth.handleAuthentication().then(() => {
-      this.dispatch(new Actions.LoginCompleted(this.$router));
+      this.dispatch(new Actions.LoginCompleted()).then(() => {
+        this.$router.push("my-connections");
+      });
     });
   }
 

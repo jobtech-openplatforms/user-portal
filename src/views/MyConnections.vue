@@ -69,6 +69,7 @@ export default class MyConnections extends Vue {
     // TODO: setup proper route guards
     setTimeout(() => {
       if (this.$auth.isAuthenticated()) {
+        this.$store.dispatch(new Actions.LoginCompleted());
         this.fetchData();
       } else {
         this.$router.push("/");
