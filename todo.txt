@@ -14,15 +14,15 @@ x mobile responsive
   x icon-sizes
   x appplattconnections 
   x app icons
-
-TODO:
-- skicka in nytt state till server
+x skicka in nytt state till server
   x generera change data
-  - uppdatera app state efter updatering
-- bug: loader när man sparar
-- proper logout
-- deploy
+  x uppdatera app state efter updatering
+x proper logout
+x deploy
   x bygg ut site
   x environments settings
-  - deploy till azure
-  - koppla mot separat app auth0
+  x deploy till azure
+  x koppla mot separat app auth0
+
+TODO:
+- bug: loader när man sparar
