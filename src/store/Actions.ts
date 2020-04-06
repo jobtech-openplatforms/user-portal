@@ -1,11 +1,9 @@
 import { ApplicationData } from '../datatypes/ApplicationData';
-import { ConnectionData } from '../datatypes/ConnectionData';
+import { PlatformData } from '../datatypes/PlatformData';
 import { Mutations } from './Mutations';
-import { ApplicationConnectionData } from '@/datatypes/ApplicationConnectionData';
 import { ActionBase } from './ActionBase';
 import { TypedState } from '@/datatypes/TypedState';
 import { TypedGetters, TypedContext } from './TypedContext';
-import VueRouter from 'vue-router';
 import AuthService from '@/plugins/AuthService';
 import axios from 'axios';
 import { AssetsManager } from '@/plugins/AssetsManager';
@@ -13,14 +11,13 @@ import { APIdata } from '@/datatypes/APIdata';
 
 
 export namespace Actions {
-    // export var TestAction = TestActions.TestAction; // example of adding actions from other namesapce/file
+    // export var TestAction = TestActions.TestAction; // example of adding actions from other namespace/file
 
     export class Login extends ActionBase {
         constructor(private auth: AuthService) { super(); }
         execute(context: TypedContext) {
             return new Promise((resolve, reject) => {
                 this.auth.login();
-                console.log("login2")
                 resolve();
             });
         }
@@ -54,7 +51,7 @@ export namespace Actions {
             return new Promise((resolve, reject) => {
                 context.commit(new Mutations.ResetState());
                 this.auth.getAccessToken().then((accessToken) => {
-                    axios.get(process.env.VUE_APP_CV_DATA_API_PATH, {
+                    axios.get(process.env.VUE_APP_CV_DATA_API_PATH + 'Platform/connection-state', {
                         headers: {
                             Accept: 'application/json',
                             Authorization: `Bearer ${accessToken}`
@@ -64,31 +61,11 @@ export namespace Actions {
                             const data = <APIdata>r.data;
                             console.log("API result success:", data);
                             data.platforms.forEach((p, i) => {
-                                const newConnection = new ConnectionData();
-                                newConnection.id = p.platformId;
-                                newConnection.logo = p.logo || AssetsManager.getLogoPath(p.name);
-                                newConnection.name = p.name;
-                                newConnection.isActive = p.isConnected;
-                                newConnection.description = p.description || "";
-                                newConnection.url = p.url || "";
-                                context.commit(new Mutations.AddPlatform(newConnection));
+                                const newPlatform = PlatformData.fromAPIData(p);
+                                context.commit(new Mutations.AddPlatform(newPlatform));
                             });
                             data.apps.forEach((a, i) => {
-                                const newApp = new ApplicationData();
-                                newApp.id = a.appId;
-                                newApp.logo = a.logo || AssetsManager.getLogoPath(a.name);
-                                newApp.name = a.name;
-                                newApp.description = a.description || "";
-                                newApp.url = a.url || "";
-                                newApp.connectedPlatforms = data.platforms.map((p, i) => {
-                                    return {
-                                        id: p.platformId,
-                                        logo: p.logo || AssetsManager.getLogoPath(p.name),
-                                        name: p.name,
-                                        isActive: a.connectedPlatforms.indexOf(p.platformId) > -1
-                                    }
-                                })
-
+                                const newApp = ApplicationData.fromAPIData(a, data.platforms);
                                 context.commit(new Mutations.AddApplication(newApp));
                             });
                             context.commit(new Mutations.SetStateAsUnchanged());
@@ -107,7 +84,7 @@ export namespace Actions {
     }
 
     export class AddPlatform extends ActionBase {
-        constructor(public platform: ConnectionData) { super(); }
+        constructor(public platform: PlatformData) { super(); }
         execute(context: TypedContext) {
             return new Promise((resolve, reject) => {
                 context.commit(new Mutations.AddPlatform(this.platform));
@@ -160,9 +137,9 @@ export namespace Actions {
         constructor(public applicationId: string, public platformId: string, public value: boolean) { super(); }
         execute(context: TypedContext) {
             return new Promise((resolve, reject) => {
-                const platform = context.state.connectedPlatforms.find(p => p.id === this.platformId);
+                const platform = context.state.connectedPlatforms.find(p => p.platformId === this.platformId);
                 if (platform) {
-                    if (this.value === true && platform.isActive === false) { // TODO: auto-enable platform should require a confirmation
+                    if (this.value === true && platform.isConnected === false) { // TODO: auto-enable platform should require a confirmation
                         context.commit(new Mutations.SetPlatformIsActive(this.platformId, true));
                     }
                     context.commit(new Mutations.SetApplicationConnectionActive(this.applicationId, this.platformId, this.value));
@@ -186,14 +163,14 @@ export namespace Actions {
                     const connectedApps: string[] = [];
                     this.state.connectedApplications.forEach(a => {
                         a.connectedPlatforms.forEach(p => {
-                            if (p.id === platform.id && p.isActive) {
-                                connectedApps.push(a.id);
+                            if (p.platformId === platform.platformId && p.isConnected) {
+                                connectedApps.push(a.appId);
                             }
                         });
                     });
                     const platformInfo = {
-                        platformId: platform.id,
-                        removeConnection: platform.isActive === false,
+                        platformId: platform.platformId,
+                        removeConnection: platform.isConnected === false,
                         connectedApps: connectedApps
                     }
                     stateUpdate.platformConnectionStateUpdates.push(platformInfo);
@@ -203,7 +180,7 @@ export namespace Actions {
                 });
 
                 this.auth.getAccessToken().then((accessToken) => {
-                    axios.post(process.env.VUE_APP_CV_DATA_API_PATH,
+                    axios.post(process.env.VUE_APP_CV_DATA_API_PATH + 'Platform/connection-state',
                         stateUpdate,
                         {
                             headers: {

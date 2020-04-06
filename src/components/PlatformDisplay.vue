@@ -1,22 +1,22 @@
 <template>
-  <div class="connection-display panel">
+  <div class="platform-display panel">
     <div class="image-container">
-      <img v-if="connection.logo" v-bind:src="connection.logo" />
+      <img v-if="platform.logo" v-bind:src="platform.logo" />
     </div>
-    <div class="connection-content-container">
-      <h3 class="overflow-elipsis">{{ connection.name }}</h3>
-      <p>{{ connection.description }}</p>
+    <div class="platform-content-container">
+      <h3 class="overflow-elipsis">{{ platform.name }}</h3>
+      <p>{{ platform.description }}</p>
     </div>
-    <div class="connection-active-container">
+    <div class="platform-active-container">
       <b-switch
         class="is-large"
-        v-model="connection.isActive"
+        v-model="platform.isActive"
         v-on:change.native="onChangeActive($event.target.checked)"
       />
-      <p v-if="connection.isActive">Active</p>
-      <p v-if="!connection.isActive">Inactive</p>
+      <p v-if="platform.isActive">Active</p>
+      <p v-if="!platform.isActive">Inactive</p>
     </div>
-    <!-- <div class="connection-menu-container">
+    <!-- <div class="platform-menu-container">
       <button class="remove-button icon-button" @click="onRemove()">
         <i class="far fa-times"></i>
       </button>
@@ -25,7 +25,7 @@
 </template>
 
 <style scoped>
-.connection-display {
+.platform-display {
   display: flex;
   flex-direction: row;
 }
@@ -50,19 +50,19 @@
   width: 100%;
   height: 100%;
 }
-.connection-content-container {
+.platform-content-container {
   width: 100%;
   margin-right: 20px;
   overflow: hidden;
 }
 
 @media (max-width: 600px) {
-  .connection-content-container {
+  .platform-content-container {
     margin-right: 10px;
   }
 }
 
-.connection-active-container p {
+.platform-active-container p {
   margin: 0;
   text-align: center;
 }
@@ -71,7 +71,7 @@
 <script lang="ts">
 import SliderCheckbox from "./SliderCheckbox.vue";
 import { Component, Prop, Vue } from "vue-property-decorator";
-import { ConnectionData } from "../datatypes/ConnectionData";
+import { PlatformData } from "../datatypes/PlatformData";
 import { Actions } from "../store/Actions";
 import { Action } from "vuex";
 import { ActionBase } from "../store/ActionBase";
@@ -79,9 +79,9 @@ import { ActionBase } from "../store/ActionBase";
 @Component({
   components: {}
 })
-export default class ConnectionDisplay extends Vue {
+export default class PlatformDisplay extends Vue {
   @Prop()
-  public connection!: ConnectionData;
+  public platform!: PlatformData;
 
   private dispatch: (a: ActionBase) => Promise<void> = this.$store.dispatch;
 
@@ -90,11 +90,11 @@ export default class ConnectionDisplay extends Vue {
   }
 
   public onChangeActive(value: boolean) {
-    this.dispatch(new Actions.SetPlatformActive(this.connection.id, value));
+    this.dispatch(new Actions.SetPlatformActive(this.platform.platformId, value));
   }
 
   // public onRemove() {
-  //   this.dispatch(new Actions.RemovePlatform(this.connection.id));
+  //   this.dispatch(new Actions.RemovePlatform(this.platform.id));
   // }
 }
 </script>

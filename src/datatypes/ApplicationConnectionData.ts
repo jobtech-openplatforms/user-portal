@@ -1,6 +1,6 @@
 export class ApplicationConnectionData {
-    public id = '';
-    public logo = '';
+    public platformId = '';
+    public logoUrl = '';
     public name = '';
-    public isActive = false;
+    public isConnected = false;
 }

@@ -23,11 +23,15 @@ export default class AuthService extends EventEmitter {
     accessTokenExpiry = 0;
 
     // Starts the user login flow
-    login(customState: any = null) {
+    login(customState: any = null, redirectUri = '') {
         return new Promise((resolve, reject) => {
-            webAuth.authorize({
+            let authOptions: auth0.AuthorizeOptions = {
                 appState: customState
-            });
+            }
+            if (redirectUri) {
+                authOptions.redirectUri = redirectUri;
+            }
+            webAuth.authorize(authOptions);
         });
     }
 
@@ -49,7 +53,6 @@ export default class AuthService extends EventEmitter {
         this.idToken = authResult.idToken;
         this.profile = authResult.idTokenPayload;
 
-        // Convert the JWT expiry time from seconds to milliseconds
         this.tokenExpiry = new Date((<any>this.profile).exp * 1000).getTime();
 
         this.accessToken = authResult.accessToken;

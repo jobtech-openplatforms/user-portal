@@ -8,7 +8,7 @@
     </div>
     <div v-if="isDataFetched">
       <h2>You have connected the following data sources</h2>
-      <ConnectionDisplay
+      <PlatformDisplay
         v-for="connection in connections"
         v-bind:key="connection.id"
         v-bind:connection="connection"
@@ -32,9 +32,9 @@
 
 <script lang="ts">
 import ApplicationDisplay from "../components/ApplicationDisplay.vue";
-import ConnectionDisplay from "../components/ConnectionDisplay.vue";
+import PlatformDisplay from "../components/PlatformDisplay.vue";
 import { Component, Prop, Vue } from "vue-property-decorator";
-import { ConnectionData } from "../datatypes/ConnectionData";
+import { PlatformData } from "../datatypes/PlatformData";
 import { ApplicationData } from "../datatypes/ApplicationData";
 import { ApplicationConnectionData } from "../datatypes/ApplicationConnectionData";
 import { TypedState } from "../datatypes/TypedState";
@@ -45,7 +45,7 @@ import HelloWorldVue from "../components/HelloWorld.vue";
 
 @Component({
   components: {
-    ConnectionDisplay,
+    PlatformDisplay,
     ApplicationDisplay
   }
 })

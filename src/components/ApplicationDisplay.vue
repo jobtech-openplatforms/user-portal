@@ -1,7 +1,7 @@
 <template>
   <div class="application-display panel">
     <div class="image-container">
-      <img v-if="application.logo" v-bind:src="application.logo" />
+      <img v-if="application.logoUrl" v-bind:src="application.logoUrl" />
     </div>
     <div class="application-content-container">
       <div class="app-info-container">
@@ -25,10 +25,10 @@
             <div
               class="platform-connection"
               v-for="platform in application.connectedPlatforms"
-              v-bind:key="platform.id"
+              v-bind:key="platform.platformId"
             >
               <div class="image-container">
-                <img v-if="platform.logo" v-bind:src="platform.logo" />
+                <img v-if="platform.logoUrl" v-bind:src="platform.logoUrl" />
               </div>
               <div class="connection-content-container">
                 <h4 class="overflow-elipsis">{{ platform.name }}</h4>
@@ -37,7 +37,7 @@
                 <b-switch
                   class="is-large"
                   v-model="platform.isActive"
-                  v-on:change.native="onChangeActive(platform.id, $event.target.checked)"
+                  v-on:change.native="onChangeActive(platform.platformId, $event.target.checked)"
                 />
               </div>
             </div>
@@ -154,13 +154,13 @@ export default class ApplicationDisplay extends Vue {
   }
 
   get noOfActiveConnections() {
-    return this.application.connectedPlatforms.filter(p => p.isActive).length;
+    return this.application.connectedPlatforms.filter(p => p.isConnected).length;
   }
 
   public onChangeActive(platformId: string, value: boolean) {
     this.dispatch(
       new Actions.SetApplicationConnectionActive(
-        this.application.id,
+        this.application.appId,
         platformId,
         value
       )

@@ -15,12 +15,12 @@
       </p>
 
       <div v-if="noApplicationsRemoved === 0 && noPlatformsRemoved=== 0">
-        <p v-if="noInactivaAppPlatformConnections>0">
+        <p v-if="noInactiveAppPlatformConnections>0">
           You have deactived one or more connections from a platforms to an apps.
           These apps will no longer be able to access your data.
         </p>
         <p
-          v-if="noInactivaAppPlatformConnections===0"
+          v-if="noInactiveAppPlatformConnections===0"
         >All apps are now set to access data from all connected platforms.</p>
       </div>
     </section>
@@ -52,22 +52,22 @@ export default class ConfirmSaveModal extends Vue {
   private isSaveInProgress = false;
   private noPlatformsRemoved = 0;
   private noApplicationsRemoved = 0;
-  private noInactivaAppPlatformConnections = 0;
+  private noInactiveAppPlatformConnections = 0;
 
   mounted() {
     this.noPlatformsRemoved = this.state.connectedPlatforms.filter(p => {
-      return p.isActive === false;
+      return p.isConnected === false;
     }).length;
 
     this.noApplicationsRemoved = this.state.connectedApplications.filter(a => {
-      return a.connectedPlatforms.filter(p => p.isActive === true).length === 0;
+      return a.connectedPlatforms.filter(p => p.isConnected === true).length === 0;
     }).length;
 
-    this.noInactivaAppPlatformConnections = 0;
+    this.noInactiveAppPlatformConnections = 0;
     this.state.connectedApplications.forEach(a => {
       return a.connectedPlatforms.forEach(p => {
-        if (p.isActive === false) {
-          this.noInactivaAppPlatformConnections++;
+        if (p.isConnected === false) {
+          this.noInactiveAppPlatformConnections++;
         }
       });
     });
