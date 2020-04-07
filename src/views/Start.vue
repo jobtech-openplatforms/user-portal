@@ -71,7 +71,9 @@ import { ActionBase } from "../store/ActionBase";
 export default class Start extends Vue {
   private dispatch: (a: ActionBase) => Promise<void> = this.$store.dispatch;
 
-  public mounted() {}
+  public mounted() {
+    localStorage.removeItem('loginState');
+  }
 
   public onLogin() {
     this.dispatch(new Actions.Login(this.$auth));

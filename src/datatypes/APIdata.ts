@@ -8,16 +8,17 @@ export class APIPlatformData {
     public logoUrl = '';
     public name = '';
     public description = '';
-    public url = '';
+    public websiteurl = '';
     public authMechanism: 'Email' | 'Oauth2' = 'Email';
     public isConnected = false;
 }
 
 export class APIApplicationsData {
-    public appId = '';
+    public appId?: string; // TODO: used for legacy
+    public applicationId = '';
     public logoUrl = '';
     public name = '';
     public description = '';
-    public url = '';
+    public websiteurl = '';
     public connectedPlatforms: string[] = [];
 }

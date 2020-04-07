@@ -6,6 +6,8 @@ export class AssetsManager {
             case "MyGigData":
             case "My Digital Backpack":
                 return require("@/assets/images/application-icons/my-digital-backpack.png");
+            case "Test app 1":
+                return require("@/assets/images/application-icons/my-digital-backpack.png");
             default:
                 return "";
                 break;

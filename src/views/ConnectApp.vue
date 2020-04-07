@@ -1,5 +1,6 @@
 <template>
   <div class="connect-app-start-page page-content">
+    CONTINUE CONNECTING
     <div v-if="!isDataFetched">
       <p>Loading...</p>
     </div>
@@ -85,7 +86,7 @@ import { ApplicationData } from '../datatypes/ApplicationData';
 
   }
 })
-export default class ConnectAppStart extends Vue {
+export default class ConnectApp extends Vue {
   public isDataFetched = false;
   public isDataError = false;
   public errorMessage = '';
@@ -96,53 +97,11 @@ export default class ConnectAppStart extends Vue {
   private dispatch: (a: ActionBase) => Promise<void> = this.$store.dispatch;
 
   private mounted() {
-    localStorage.removeItem('loginState');
-    // test url: http://localhost:8080/initiate-connection?app=7NEAJI5VsdIVQzyoNt3Qp5ESk6DvxEqd&platform=5846584a-2719-48dd-bef2-83c6d7dbd421&state=user123&permissions=1&returnurl=%27http%3A%2F%2Flocalhost%3A8080%2Freturned
+    console.log();
+    // localStorage.removeItem('loginState');
+    // test url: http://localhost:8080/connect-start?app=7NEAJI5VsdIVQzyoNt3Qp5ESk6DvxEqd&platform=5846584a-2719-48dd-bef2-83c6d7dbd421&state=user123&permissions=1&returnurl=%27http%3A%2F%2Flocalhost%3A8080%2Freturned
 
-    if (
-      this.$route.query.app
-      && this.$route.query.platform
-      && this.$route.query.state
-      && this.$route.query.returnurl
-      && this.$route.query.permissions
-    ) {
-      const platformsPromise = axios.get(process.env.VUE_APP_CV_DATA_API_PATH + 'Platform/available', {
-        headers: {
-          Accept: 'application/json',
-          Authorization: ``
-        }
-      });
-      const appPromise = axios.get(process.env.VUE_APP_CV_DATA_API_PATH + 'App/' + this.$route.query.app as string, {
-        headers: {
-          Accept: 'application/json',
-          Authorization: ``
-        }
-      });
-      Promise.all([platformsPromise, appPromise]).then((r) => {
-        const platforms = r[0].data as APIPlatformData[];
-        const apiPlatformData = platforms.find((p) => p.platformId === this.$route.query.platform) as APIPlatformData;
-        const platform = PlatformData.fromAPIData(apiPlatformData);
 
-        // TODO: use proper API
-        console.log(r[1].data);
-        const apiAppData = r[1].data as APIApplicationsData;
-        const app = ApplicationData.fromAPIData(apiAppData, platforms);
-        // const app = { appId: '123', name: "TestApp", description: "This a really cool app", url: "https://dn.se", connectedPlatforms: [], logoUrl: "https://app.mydigitalbackpack.org/assets/gfx/platform-icons/upwork.png" }
-
-        this.appState = {
-          type: 'CONNECT',
-          route: 'connect-app',
-          app,
-          platform,
-          state: this.$route.query.state as string,
-          returnurl: this.$route.query.returnurl as string,
-          permissions: parseInt(this.$route.query.permissions as string, 10)
-        }
-        this.isDataFetched = true;
-      });
-    } else {
-      this.errorMessage = 'Your link doesn not include all necessary parameters, please check that you got the complete url.';
-    }
   }
 
   public onLogin() {

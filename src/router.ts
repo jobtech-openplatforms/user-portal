@@ -3,6 +3,7 @@ import Router from 'vue-router';
 import AuthCallback from './views/AuthCallback.vue';
 import Start from './views/Start.vue';
 import ConnectAppStart from './views/ConnectAppStart.vue';
+import ConnectApp from './views/ConnectApp.vue';
 import MyConnections from './views/MyConnections.vue';
 
 Vue.use(Router);
@@ -22,9 +23,15 @@ export default new Router({
       component: MyConnections,
     },
     {
-      path: '/connect',
-      name: 'connect',
+      path: '/initiate-connection',
+      name: 'connect-start',
       component: ConnectAppStart,
+      props: true
+    },
+    {
+      path: '/add-connection',
+      name: 'connect',
+      component: ConnectApp,
       props: true
     },
     {

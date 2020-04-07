@@ -1,13 +1,15 @@
 import { APIdata, APIPlatformData } from './APIdata';
+import { AssetsManager } from '@/plugins/AssetsManager';
 
 export class PlatformData {
     public static fromAPIData(data: APIPlatformData) {
         const newData = new PlatformData();
         newData.platformId = data.platformId;
-        newData.logoUrl = data.logoUrl;
+        console.log(data);
+        newData.logoUrl = data.logoUrl || AssetsManager.getLogoPath(data.name);
         newData.name = data.name;
         newData.description = data.description;
-        newData.url = data.url;
+        newData.url = data.websiteurl;
         newData.authMechanism = data.authMechanism;
         return newData;
     }
