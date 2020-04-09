@@ -9,67 +9,35 @@
     </div>
     <div v-if="isDataFetched">
       <div class="centered-content">
-        <div class="connection-diagram">
-          <div class="platform-box">
-            <img class="logo-icon" :src="appState.platform.logoUrl" />
-            <p>{{appState.platform.name}}</p>
-          </div>
-          <div class="arrow">
-            <i class="far fa-arrow-right"></i>
-          </div>
-          <div class="openplatforms-box">
-            <img class="logo-icon" src="../assets/images/open-platforms-logo-icon.png" />
-            <p>Open Platforms</p>
-          </div>
-          <div class="arrow">
-            <i class="far fa-arrow-right"></i>
-          </div>
-          <div class="app-box">
-            <img class="logo-icon" :src="appState.app.logoUrl" />
-            <p>{{appState.app.name}}</p>
-          </div>
-        </div>
-        <h2>Connect {{appState.platform.name}} to {{appState.app.name}}</h2>
+        <ConnectionDiagram :state="appState" />
+        <h2>Access data from {{appState.platform.name}}</h2>
         <p>
-          {{appState.app.name}} uses Open Platforms to let you access your reputation data from connected gig platforms.
+          Open Platforms to let's you access your reputation data from connected gig platforms.
           <a
             href="https://openplatforms.org"
           >Read more</a>
         </p>
+        <h4>{{appState.app.name}} want to access the following data from {{appState.platform.name}}:</h4>
+        <ul>
+          <li>The number of gigs you have completed</li>
+          <li>The average rating you have received from clients</li>
+        </ul>
         <p>Login or create an account to add this connections!</p>
-        <button class="button is-primary is-large" @click="onLogin()">Login to Open Platforms</button>
+        <button class="button is-primary is-large" @click="onLogin()">Sign in to Open Platforms</button>
       </div>
     </div>
   </div>
 </template>
 
 <style scoped>
-.connection-diagram {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.platform-box,
-.openplatforms-box,
-.app-box {
-  background: white;
-  padding: 15px;
-  border-radius: 15px;
-  min-width: 120px;
-  text-align: center;
-  margin-right: 15px;
-}
-.arrow {
-  margin-right: 15px;
-}
-.logo-icon {
-  width: 72px;
-  height: 72px;
+li {
+  list-style: disc;
 }
 </style>
 
 
 <script lang="ts">
+import ConnectionDiagram from '../components/ConnectionDiagram.vue'
 import { Component, Prop, Vue } from "vue-property-decorator";
 import { TypedState } from "../datatypes/TypedState";
 import { ConnectAppState } from "../datatypes/ConnectAppState";
@@ -81,7 +49,7 @@ import { PlatformData } from '../datatypes/PlatformData';
 import { ApplicationData } from '../datatypes/ApplicationData';
 
 @Component({
-  components: {
+  components: {    ConnectionDiagram
 
   }
 })

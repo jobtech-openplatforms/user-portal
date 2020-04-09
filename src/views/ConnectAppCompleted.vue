@@ -10,31 +10,21 @@
     <div v-if="isDataFetched">
       <div class="centered-content">
         <ConnectionDiagram :state="appState" />
-        <h2>Step 1: Connect {{appState.platform.name}}</h2>
-        <div v-if="appState.platform.authMechanism ==='Email'">
-          <div v-if="emailValidationState=='START'">
-            <p>Enter the email adress you use on {{appState.platform.name}}</p>
-            <input type="email" v-model="email" required />
-            <p v-if="emailErrorMessage" class="error-message">{{emailErrorMessage}}</p>
+        <h2>You have now created a live connection that sends the following data from {{appState.platform.name}} to {{appState.app.name}} </h2>
+        <ul>
+            <li>Number of gigs you have completed</li>
+            <li>Average rating you have received from clients</li>
+        </ul>
+            <p>This is a live connection. Your data will be updated whenever you complete more gigs on Freelancer.
+              If you later want to revoke this connection, login to <a href="https://user.openplatforms.org">user.openplatforms.org</a></p>
             <button
               class="button is-primary is-large"
               @click="onStartEmailVerification()"
-            >Validate email</button>
-          </div>
-          <div v-if="emailValidationState=='WAITING'">
-            <p>
-              To verify your email, we have sent you a mail with a verification link.
-              Click on this link and then press the button to continue
-            </p>
-            <button class="button is-primary is-large" @click="onContinueEmail()">Email is validated</button>
-          </div>
+            >Finish</button>
         </div>
 
-        <div v-if="appState.platform.authMechanism ==='Oauth2'">
-          <p>You will now be redirected to {{appState.platform.name}} where you need to allow that Open Platforms can access your data</p>
-        </div>
         <button class="button is-secondary is-large" @click="onCancel()">Cancel</button>
-        <button class="button is-primary is-large" @click="onContinueOath()">Continue</button>
+        <button class="button is-primary is-large" @click="onFinish()">Finish</button>
       </div>
     </div>
   </div>
@@ -63,7 +53,7 @@ import AuthService from '../plugins/AuthService';
 
   }
 })
-export default class ConnectApp extends Vue {
+export default class ConnectAppCompleted extends Vue {
   public isDataFetched = false;
   public isDataError = false;
   public errorMessage = '';
@@ -82,31 +72,14 @@ export default class ConnectApp extends Vue {
     if (this.appState) {
       this.isDataFetched = true;
     }
-    console.log('mounted', this.$route, this.$route.query, this.$route.path);
   }
 
-  public onStartEmailVerification() {
-    this.emailValidationState = 'WAITING';
-  }
-
-  public onContinueEmail() {
-    console.log('onContinueEmail');
-  }
-
-  public onContinueOath() {
-    const baseUrl = window.location.host;
-    this.auth.getAccessToken().then((accessToken: any) => {
-      this.openPlatforms.startOauthConnection(
-        accessToken,
-        this.appState.platform.platformId,
-        this.appState.app.appId,
-        baseUrl + '/oauth-result'
-      );
-    });
+  public onFinish() {
+    
   }
 
   public onCancel() {
-    // TODO: leave open platforms either by going back to returnUrl
+    // TODO: ask if it should remove connection leave open platforms either by going back to returnUrl
   }
 }
 </script>

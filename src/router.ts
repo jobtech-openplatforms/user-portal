@@ -14,29 +14,29 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'start',
       component: Start,
     },
     {
       path: '/my-connections',
-      name: 'my-connections',
       component: MyConnections,
     },
     {
       path: '/initiate-connection',
-      name: 'connect-start',
       component: ConnectAppStart,
       props: true
     },
     {
       path: '/add-connection',
-      name: 'connect',
+      component: ConnectApp,
+      props: true
+    },
+    {
+      path: '/completed-connection',
       component: ConnectApp,
       props: true
     },
     {
       path: '/auth',
-      name: 'Auth callback',
       component: AuthCallback,
     },
   ],

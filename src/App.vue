@@ -2,9 +2,9 @@
   <div id="app">
     <div id="nav">
       <div>
-        <img class="app-logo" src="./assets/images/open-platforms-logo-icon.png" />
+        <img class="app-logo-icon" src="./assets/images/open-platforms-logo-icon.png" />
         <img
-          class="app-logo"
+          class="app-logo-text"
           v-bind:class="{ 'mobile-invisible': isLoggedIn }"
           src="./assets/images/open-platforms-logo-text.png"
         />
@@ -36,8 +36,10 @@
   top: 0;
 }
 
-.app-logo {
+.app-logo-icon,
+.app-logo-text {
   max-height: 45px;
+  margin-right: 4px;
 }
 </style>
 

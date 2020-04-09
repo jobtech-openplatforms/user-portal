@@ -1,28 +1,24 @@
 DONE:
-x proper login
-x hämta in state från server
-x hantera logout
-x hantera tom lista
-x dubbelkolla spara copy
-x styling
-  x knappar i spara dialog
-  x favicons
-  x focus areas
-x mobile responsive
-  x start page
-  x header
-  x icon-sizes
-  x appplattconnections 
-  x app icons
-x skicka in nytt state till server
-  x generera change data
-  x uppdatera app state efter updatering
-x proper logout
-x deploy
-  x bygg ut site
-  x environments settings
-  x deploy till azure
-  x koppla mot separat app auth0
+
 
 TODO:
+- add-connection
+  - om redan inloggad gå direkt in
+  x route
+  x ta emot state
+  - oath
+    - anropa funktion
+    - redirect
+    - ta emot callbackurl
+    - cancel
+  - email based
+    - anropa funktione
+    - vänteläge
+    - kolla om verifierad
+    - cancel
+  - uppkoppling finns redan
+
+- completed-connection
+
+
 - bug: loader när man sparar
