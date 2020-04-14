@@ -11,6 +11,7 @@ export class PlatformData {
         newData.description = data.description;
         newData.url = data.websiteurl;
         newData.authMechanism = data.authMechanism;
+        newData.isConnected = data.isConnected || false;
         return newData;
     }
 

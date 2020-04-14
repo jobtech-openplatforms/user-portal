@@ -7,8 +7,8 @@ TODO:
   x route
   x ta emot state
   - oath
-    - anropa funktion
-    - redirect
+    x anropa funktion
+    x redirect
     - ta emot callbackurl
     - cancel
   - email based
@@ -19,6 +19,20 @@ TODO:
   - uppkoppling finns redan
 
 - completed-connection
+  - remove connect-state
+  - redirect
 
+- error handling
+  - no loginstate on connectapp
+  - no loginstate on connectappcompleted
+  - not logged in on connectapp
+  - not logged in on completed step
+  - already connected -> completed
+  - already connected to freelancer but revoked
+  - not able to save cahnges in user portal
+
+- ladd mätare
+  - första sidan
+  - 
 
 - bug: loader när man sparar

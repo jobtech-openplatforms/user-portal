@@ -100,7 +100,7 @@ export default class ConnectApp extends Vue {
         accessToken,
         this.appState.platform.platformId,
         this.appState.app.appId,
-        baseUrl + '/oauth-result'
+        baseUrl + '/completed-connection'
       );
     });
   }

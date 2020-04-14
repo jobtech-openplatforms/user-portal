@@ -36,7 +36,7 @@
               <div>
                 <b-switch
                   class="is-large"
-                  v-model="platform.isActive"
+                  v-model="platform.isConnected"
                   v-on:change.native="onChangeActive(platform.platformId, $event.target.checked)"
                 />
               </div>

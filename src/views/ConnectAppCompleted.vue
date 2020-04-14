@@ -15,15 +15,9 @@
             <li>Number of gigs you have completed</li>
             <li>Average rating you have received from clients</li>
         </ul>
-            <p>This is a live connection. Your data will be updated whenever you complete more gigs on Freelancer.
+            <p><b>Please note:</b>This is a live connection. Your data will be updated whenever you complete more gigs on Freelancer.
               If you later want to revoke this connection, login to <a href="https://user.openplatforms.org">user.openplatforms.org</a></p>
-            <button
-              class="button is-primary is-large"
-              @click="onStartEmailVerification()"
-            >Finish</button>
         </div>
-
-        <button class="button is-secondary is-large" @click="onCancel()">Cancel</button>
         <button class="button is-primary is-large" @click="onFinish()">Finish</button>
       </div>
     </div>
@@ -31,6 +25,9 @@
 </template>
 
 <style scoped>
+li {
+  list-style: disc;
+}
 </style>
 
 
@@ -75,7 +72,8 @@ export default class ConnectAppCompleted extends Vue {
   }
 
   public onFinish() {
-    
+    console.log(this.appState);
+    window.location.href = this.appState.returnurl;
   }
 
   public onCancel() {

@@ -1,7 +1,7 @@
 <template>
   <div class="platform-display panel">
     <div class="image-container">
-      <img v-if="platform.logo" v-bind:src="platform.logo" />
+      <img v-if="platform.logoUrl" v-bind:src="platform.logoUrl" />
     </div>
     <div class="platform-content-container">
       <h3 class="overflow-elipsis">{{ platform.name }}</h3>
@@ -10,11 +10,11 @@
     <div class="platform-active-container">
       <b-switch
         class="is-large"
-        v-model="platform.isActive"
+        v-model="platform.isConnected"
         v-on:change.native="onChangeActive($event.target.checked)"
       />
-      <p v-if="platform.isActive">Active</p>
-      <p v-if="!platform.isActive">Inactive</p>
+      <p v-if="platform.isConnected">Active</p>
+      <p v-if="!platform.isConnected">Inactive</p>
     </div>
     <!-- <div class="platform-menu-container">
       <button class="remove-button icon-button" @click="onRemove()">

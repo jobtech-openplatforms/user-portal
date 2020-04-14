@@ -10,15 +10,15 @@
       <h2>You have connected the following data sources</h2>
       <PlatformDisplay
         v-for="connection in connections"
-        v-bind:key="connection.id"
-        v-bind:connection="connection"
+        v-bind:key="connection.platformId"
+        v-bind:platform="connection"
       />
       <p v-if="connections.length===0">You currently have no connected platforms.</p>
       <hr />
       <h2>The following apps can access your data</h2>
       <ApplicationDisplay
         v-for="application in applications"
-        v-bind:key="application.id"
+        v-bind:key="application.appId"
         v-bind:application="application"
       />
       <p v-if="applications.length===0">You currently have no connected applications.</p>
@@ -56,6 +56,7 @@ export default class MyConnections extends Vue {
   public isDataError = false;
 
   get connections() {
+    console.log(this.state.connectedPlatforms);
     return this.state.connectedPlatforms;
   }
   get applications() {
@@ -82,6 +83,7 @@ export default class MyConnections extends Vue {
       () => {
         this.isDataError = false;
         this.isDataFetched = true;
+        console.log(this.state);
       },
       () => {
         this.isDataError = true;

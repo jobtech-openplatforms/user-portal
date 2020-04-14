@@ -24,14 +24,9 @@ export class OpenPlatformsService extends EventEmitter {
                         Authorization: `Bearer ${accessToken}`
                     }
                 }).then((r) => {
-                    console.log("startOauthConnection result", r.data);
                     if (r.data.state === 'Connected') {
-                        console.log("already connected");
                     } else {
-                        console.log("start outh flow");
-                        setTimeout(() => {
-                            window.location.href = r.data.authorizationUri;
-                        }, 5000);
+                        window.location.href = r.data.authorizationUri;
                         resolve(r.data);
                     }
                 });

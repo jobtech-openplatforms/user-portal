@@ -53,7 +53,7 @@ import { ApplicationData } from '../datatypes/ApplicationData';
 
   }
 })
-export default class ConnectAppStart extends Vue {
+export default class ConnectAppInitiate extends Vue {
   public isDataFetched = false;
   public isDataError = false;
   public errorMessage = '';

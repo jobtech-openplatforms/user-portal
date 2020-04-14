@@ -2,8 +2,9 @@ import Vue from 'vue';
 import Router from 'vue-router';
 import AuthCallback from './views/AuthCallback.vue';
 import Start from './views/Start.vue';
-import ConnectAppStart from './views/ConnectAppStart.vue';
+import ConnectAppInitiate from './views/ConnectAppInitiate.vue';
 import ConnectApp from './views/ConnectApp.vue';
+import ConnectAppCompleted from './views/ConnectAppCompleted.vue';
 import MyConnections from './views/MyConnections.vue';
 
 Vue.use(Router);
@@ -22,7 +23,7 @@ export default new Router({
     },
     {
       path: '/initiate-connection',
-      component: ConnectAppStart,
+      component: ConnectAppInitiate,
       props: true
     },
     {
@@ -32,7 +33,7 @@ export default new Router({
     },
     {
       path: '/completed-connection',
-      component: ConnectApp,
+      component: ConnectAppCompleted,
       props: true
     },
     {
