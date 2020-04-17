@@ -1,11 +1,11 @@
 <template>
   <div class="connect-app-start-page page-content">
-    <div v-if="!isDataFetched">
+    <div v-if="!isDataFetched && !isDataError">
       <p>Loading...</p>
     </div>
     <div v-if="isDataError">
-      <p>Something went wrong, error message:</p>
       <p>{{errorMessage}}</p>
+      <button class="button is-secondary is-large" @click="onCancel()">Cancel</button>
     </div>
     <div v-if="isDataFetched">
       <div class="centered-content">
@@ -23,6 +23,7 @@
           <li>The average rating you have received from clients</li>
         </ul>
         <p>Login or create an account to add this connections!</p>
+        <button class="button is-secondary is-large" @click="onCancel()">Cancel</button>
         <button class="button is-primary is-large" @click="onLogin()">Sign in to Open Platforms</button>
       </div>
     </div>
@@ -30,9 +31,6 @@
 </template>
 
 <style scoped>
-li {
-  list-style: disc;
-}
 </style>
 
 
@@ -47,6 +45,7 @@ import axios from 'axios';
 import { APIPlatformData, APIApplicationsData } from '../datatypes/APIdata';
 import { PlatformData } from '../datatypes/PlatformData';
 import { ApplicationData } from '../datatypes/ApplicationData';
+import { OpenPlatformsService } from '../plugins/OpenPlatformsService';
 
 @Component({
   components: {    ConnectionDiagram
@@ -58,6 +57,7 @@ export default class ConnectAppInitiate extends Vue {
   public isDataError = false;
   public errorMessage = '';
   private state: TypedState = <TypedState>(<any>this.$store.state);
+  private openPlatforms: OpenPlatformsService = (<any>this).$openPlatforms;
 
   public appState!: ConnectAppState;
 
@@ -71,7 +71,7 @@ export default class ConnectAppInitiate extends Vue {
       this.$route.query.app
       && this.$route.query.platform
       && this.$route.query.state
-      && this.$route.query.returnurl
+      && this.$route.query.callbackurl
       && this.$route.query.permissions
     ) {
       const platformsPromise = axios.get(process.env.VUE_APP_CV_DATA_API_PATH + 'Platform/available', {
@@ -103,19 +103,29 @@ export default class ConnectAppInitiate extends Vue {
           app,
           platform,
           state: this.$route.query.state as string,
+          callbackurl: this.$route.query.callbackurl as string,
           returnurl: this.$route.query.returnurl as string,
           permissions: parseInt(this.$route.query.permissions as string, 10)
         }
         this.isDataFetched = true;
-      });
+      },
+        () => {
+          this.isDataError = true;
+          this.errorMessage = 'Could not access data from the application/platform from Open Platforms. Please reload the page or check that the url is correct.';
+        });
     } else {
-      this.errorMessage = 'Your link doesn not include all necessary parameters, please check that you got the complete url.';
+      this.isDataError = true;
+      this.errorMessage = 'Your link doesn not include all necessary parameters, please check that you got the complete url from the application you want to access your data.';
     }
   }
 
   public onLogin() {
     localStorage.setItem('loginState', JSON.stringify(this.appState));
     this.dispatch(new Actions.Login(this.$auth));
+  }
+
+  public onCancel() {
+    this.openPlatforms.cancelConnectionFlow(this.appState);
   }
 }
 </script>

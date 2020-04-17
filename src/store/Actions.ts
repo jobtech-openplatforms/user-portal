@@ -180,7 +180,6 @@ export namespace Actions {
                 });
 
                 this.auth.getAccessToken().then((accessToken) => {
-                    console.log(stateUpdate);
                     axios.post(process.env.VUE_APP_CV_DATA_API_PATH + 'Platform/connection-state',
                         stateUpdate,
                         {

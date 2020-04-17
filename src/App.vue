@@ -41,6 +41,11 @@
   max-height: 45px;
   margin-right: 4px;
 }
+
+li {
+  list-style: disc;
+  margin-left: 17px;
+}
 </style>
 
 <script lang="ts">

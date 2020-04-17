@@ -3,36 +3,41 @@ DONE:
 
 TODO:
 - add-connection
-  - om redan inloggad gå direkt in
-  x route
-  x ta emot state
-  - oath
-    x anropa funktion
-    x redirect
-    - ta emot callbackurl
-    - cancel
   - email based
-    - anropa funktione
+    - anropa funktionen
     - vänteläge
     - kolla om verifierad
     - cancel
-  - uppkoppling finns redan
+    - felaktig mailadress?
+    - ej bekräftat adress
 
-- completed-connection
-  - remove connect-state
-  - redirect
+  -lägg till loaderfunktion på knappar
+    - disabled
+    - rotating loader symbol
 
 - error handling
-  - no loginstate on connectapp
-  - no loginstate on connectappcompleted
-  - not logged in on connectapp
-  - not logged in on completed step
-  - already connected -> completed
-  - already connected to freelancer but revoked
-  - not able to save cahnges in user portal
+  - no connectionstate on connectapp
+  - no connectionstate on connectappcompleted
+  - already connected to freelancer but revoked?
+  - not able to save changes in user portal
+  - check why connect app thinks it's logged out
+
+  - cancel connection
+    - get correct return url
+    - error if missing?
 
 - ladd mätare
   - första sidan
-  - 
 
-- bug: loader när man sparar
+- design
+  - snyggare
+  - responsiv mobil
+
+- ska vi göra det tydligare med två knappar på inloggningssidor (create account/login)
+
+My connections:
+- bug: loader när man sparar ser konstig ut ersätt med egen loader
+- bug när man tar bort plattform helt utan att först ta bort connected apps
+- kolla över spara-meddelande, göra mer lättsmält?
+
+

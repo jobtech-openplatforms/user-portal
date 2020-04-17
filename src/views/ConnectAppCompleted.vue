@@ -1,16 +1,17 @@
 <template>
   <div class="connect-app-start-page page-content">
-    <div v-if="!isDataFetched">
+    <div v-if="!isDataFetched && !isDataError">
       <p>Loading...</p>
     </div>
     <div v-if="isDataError">
-      <p>Something went wrong, error message:</p>
       <p class="error-message">{{errorMessage}}</p>
+      <button class="button is-secondary is-large" @click="onCancel()">Cancel</button>
     </div>
     <div v-if="isDataFetched">
       <div class="centered-content">
         <ConnectionDiagram :state="appState" />
-        <h2>You have now created a live connection that sends the following data from {{appState.platform.name}} to {{appState.app.name}} </h2>
+        <h2>You have now created a live connection!</h2>
+        <p> The following data from {{appState.platform.name}} is now sent to {{appState.app.name}}: </p>
         <ul>
             <li>Number of gigs you have completed</li>
             <li>Average rating you have received from clients</li>
@@ -25,9 +26,6 @@
 </template>
 
 <style scoped>
-li {
-  list-style: disc;
-}
 </style>
 
 
@@ -44,6 +42,7 @@ import { PlatformData } from '../datatypes/PlatformData';
 import { ApplicationData } from '../datatypes/ApplicationData';
 import { OpenPlatformsService } from '../plugins/OpenPlatformsService';
 import AuthService from '../plugins/AuthService';
+import LoginNeededModal from '../components/LoginNeededModal.vue';
 
 @Component({
   components: {    ConnectionDiagram
@@ -68,16 +67,37 @@ export default class ConnectAppCompleted extends Vue {
     this.appState = JSON.parse(localStorage.getItem('loginState') as string);
     if (this.appState) {
       this.isDataFetched = true;
+    }else{
+      this.isDataError=true;
+      this.errorMessage = 'Could not find connection data, please try again.';
     }
   }
 
   public onFinish() {
-    console.log(this.appState);
-    window.location.href = this.appState.returnurl;
+    this.auth.getAccessToken().then(
+      (accessToken: any) => {
+        this.openPlatforms.completeConnectionFlow(accessToken, this.appState).then(
+          ()=>{},
+          ()=>{
+            this.isDataFetched = false;
+            this.isDataError=true;
+            this.errorMessage = 'Could not complete connection to '+this.appState.app.name+". Please try again.";
+          }
+        );
+      },
+      () => {
+        this.$buefy.modal.open({
+          parent: this,
+          component: LoginNeededModal,
+          hasModalCard: true
+        });
+      }
+    );
+    
   }
 
   public onCancel() {
-    // TODO: ask if it should remove connection leave open platforms either by going back to returnUrl
+    this.openPlatforms.cancelConnectionFlow(this.appState);
   }
 }
 </script>

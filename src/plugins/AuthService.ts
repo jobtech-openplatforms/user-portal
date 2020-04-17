@@ -121,6 +121,9 @@ export default class AuthService extends EventEmitter {
     }
 
     isAccessTokenValid() {
+        if (this.accessToken === null) {
+            this.isAuthenticated();
+        }
         return (
             this.accessToken &&
             this.accessTokenExpiry &&

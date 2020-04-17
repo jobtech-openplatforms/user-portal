@@ -3,7 +3,7 @@ import Router from 'vue-router';
 import AuthCallback from './views/AuthCallback.vue';
 import Start from './views/Start.vue';
 import ConnectAppInitiate from './views/ConnectAppInitiate.vue';
-import ConnectApp from './views/ConnectApp.vue';
+import ConnectAppAdd from './views/ConnectAppAdd.vue';
 import ConnectAppCompleted from './views/ConnectAppCompleted.vue';
 import MyConnections from './views/MyConnections.vue';
 
@@ -28,7 +28,7 @@ export default new Router({
     },
     {
       path: '/add-connection',
-      component: ConnectApp,
+      component: ConnectAppAdd,
       props: true
     },
     {

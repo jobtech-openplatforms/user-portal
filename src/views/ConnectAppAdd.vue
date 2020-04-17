@@ -1,40 +1,47 @@
 <template>
   <div class="connect-app-start-page page-content">
-    <div v-if="!isDataFetched">
+    <div v-if="!isDataFetched && !isDataError">
       <p>Loading...</p>
     </div>
     <div v-if="isDataError">
-      <p>Something went wrong, error message:</p>
       <p class="error-message">{{errorMessage}}</p>
+      <button class="button is-secondary is-large" @click="onCancel()">Cancel</button>
     </div>
     <div v-if="isDataFetched">
       <div class="centered-content">
         <ConnectionDiagram :state="appState" />
-        <h2>Step 1: Connect {{appState.platform.name}}</h2>
+
         <div v-if="appState.platform.authMechanism ==='Email'">
           <div v-if="emailValidationState=='START'">
+            <h2>Step 1: Connect {{appState.platform.name}}</h2>
             <p>Enter the email adress you use on {{appState.platform.name}}</p>
-            <input type="email" v-model="email" required />
-            <p v-if="emailErrorMessage" class="error-message">{{emailErrorMessage}}</p>
+            <div>
+              <input type="email" v-model="email" required />
+              <p v-if="emailErrorMessage" class="error-message">{{emailErrorMessage}}</p>
+            </div>
+            <button class="button is-secondary is-large" @click="onCancel()">Cancel</button>
             <button
               class="button is-primary is-large"
               @click="onStartEmailVerification()"
             >Validate email</button>
           </div>
           <div v-if="emailValidationState=='WAITING'">
+            <h2>Step 2: Click on the email link</h2>
             <p>
               To verify your email, we have sent you a mail with a verification link.
               Click on this link and then press the button to continue
             </p>
+            <button class="button is-secondary is-large" @click="onCancel()">Cancel</button>
             <button class="button is-primary is-large" @click="onContinueEmail()">Email is validated</button>
           </div>
         </div>
 
         <div v-if="appState.platform.authMechanism ==='Oauth2'">
+          <h2>Connect {{appState.platform.name}}</h2>
           <p>You will now be redirected to {{appState.platform.name}} where you need to allow that Open Platforms can access your data</p>
+          <button class="button is-secondary is-large" @click="onCancel()">Cancel</button>
+          <button class="button is-primary is-large" @click="onContinueOath()">Continue</button>
         </div>
-        <button class="button is-secondary is-large" @click="onCancel()">Cancel</button>
-        <button class="button is-primary is-large" @click="onContinueOath()">Continue</button>
       </div>
     </div>
   </div>
@@ -57,13 +64,14 @@ import { PlatformData } from '../datatypes/PlatformData';
 import { ApplicationData } from '../datatypes/ApplicationData';
 import { OpenPlatformsService } from '../plugins/OpenPlatformsService';
 import AuthService from '../plugins/AuthService';
+import LoginNeededModal from '../components/LoginNeededModal.vue';
 
 @Component({
   components: {    ConnectionDiagram
 
   }
 })
-export default class ConnectApp extends Vue {
+export default class ConnectAppAdd extends Vue {
   public isDataFetched = false;
   public isDataError = false;
   public errorMessage = '';
@@ -81,12 +89,24 @@ export default class ConnectApp extends Vue {
     this.appState = JSON.parse(localStorage.getItem('loginState') as string);
     if (this.appState) {
       this.isDataFetched = true;
+    } else {
+      this.isDataError = true;
+      this.errorMessage = 'Could not find connection data, please try again.';
     }
-    console.log('mounted', this.$route, this.$route.query, this.$route.path);
   }
 
   public onStartEmailVerification() {
-    this.emailValidationState = 'WAITING';
+    this.emailErrorMessage = '';
+    if (this.validateEmail(this.email)) {
+      this.emailValidationState = 'WAITING';
+    } else {
+      this.emailErrorMessage = 'Please enter a valid email adress';
+    }
+  }
+
+  public validateEmail(email: string) {
+    var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(String(email).toLowerCase());
   }
 
   public onContinueEmail() {
@@ -94,19 +114,28 @@ export default class ConnectApp extends Vue {
   }
 
   public onContinueOath() {
-    const baseUrl = window.location.host;
-    this.auth.getAccessToken().then((accessToken: any) => {
-      this.openPlatforms.startOauthConnection(
-        accessToken,
-        this.appState.platform.platformId,
-        this.appState.app.appId,
-        baseUrl + '/completed-connection'
-      );
-    });
+    const baseUrl = window.location.protocol + '//' + window.location.host;
+    this.auth.getAccessToken().then(
+      (accessToken: any) => {
+        this.openPlatforms.startOauthConnection(
+          accessToken,
+          this.appState.platform.platformId,
+          this.appState.app.appId,
+          baseUrl + '/completed-connection'
+        );
+      },
+      () => {
+        this.$buefy.modal.open({
+          parent: this,
+          component: LoginNeededModal,
+          hasModalCard: true
+        });
+      }
+    );
   }
 
   public onCancel() {
-    // TODO: leave open platforms either by going back to returnUrl
+    this.openPlatforms.cancelConnectionFlow(this.appState);
   }
 }
 </script>
