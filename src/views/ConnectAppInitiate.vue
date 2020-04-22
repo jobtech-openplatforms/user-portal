@@ -70,7 +70,6 @@ export default class ConnectAppInitiate extends Vue {
     if (
       this.$route.query.app
       && this.$route.query.platform
-      && this.$route.query.state
       && this.$route.query.callbackurl
       && this.$route.query.permissions
     ) {
@@ -102,9 +101,7 @@ export default class ConnectAppInitiate extends Vue {
           route: 'connect-app',
           app,
           platform,
-          state: this.$route.query.state as string,
           callbackurl: this.$route.query.callbackurl as string,
-          returnurl: this.$route.query.returnurl as string,
           permissions: parseInt(this.$route.query.permissions as string, 10)
         }
         this.isDataFetched = true;
@@ -115,7 +112,7 @@ export default class ConnectAppInitiate extends Vue {
         });
     } else {
       this.isDataError = true;
-      this.errorMessage = 'Your link doesn not include all necessary parameters, please check that you got the complete url from the application you want to access your data.';
+      this.errorMessage = "Your link doesn't not include all necessary parameters, please check that you got the complete url from the application you want to access your data.";
     }
   }
 

@@ -66,31 +66,28 @@ export class OpenPlatformsService extends EventEmitter {
         try {
             const userData: UserData = await this.getUser(accessToken);
             let callbackurl = connectState.callbackurl;
-            let parameters = ['result=completed', 'openplatformsid=' + userData.id];
+            let parameters = ['result=completed', 'openplatformsuserid=' + userData.id];
             if (callbackurl.indexOf('?') > -1) {
                 callbackurl += '&' + parameters.join('&');
             } else {
                 callbackurl += '?' + parameters.join('&');
             }
 
+            if (window.opener === null) {
+                localStorage.removeItem('loginState');
+                window.location.href = connectState.callbackurl as string;
+                return;
+            }
+
             const result = await axios.get(callbackurl,
                 {
                     headers: {
-                        Accept: 'application/json',
-                        Authorization: `Bearer ${accessToken}`
+                        Accept: 'application/json'
                     }
                 }
             );
-
-            console.log(result);
             localStorage.removeItem('loginState');
-
-            if (window.opener === null) {
-                window.location.href = connectState.returnurl as string;
-            }
-            else {
-                window.close();
-            }
+            window.close();
 
         } catch (err) {
             throw ({ e: 'Could not register connection at ' + connectState.app + ". Error: " + err });
@@ -100,7 +97,14 @@ export class OpenPlatformsService extends EventEmitter {
     cancelConnectionFlow(connectState: ConnectAppState) {
         localStorage.removeItem('loginState');
         if (window.opener === null) {
-            window.location.href = connectState.returnurl as string;
+            let callbackurl = connectState.callbackurl;
+            let parameters = ['result=cancelled'];
+            if (callbackurl.indexOf('?') > -1) {
+                callbackurl += '&' + parameters.join('&');
+            } else {
+                callbackurl += '?' + parameters.join('&');
+            }
+            window.location.href = connectState.callbackurl as string;
         }
         else {
             window.close();
