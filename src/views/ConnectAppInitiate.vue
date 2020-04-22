@@ -100,6 +100,7 @@ export default class ConnectAppInitiate extends Vue {
           route: 'connect-app',
           app,
           platform,
+          state: this.$route.query.state as string,
           callbackurl: app.callbackUrl,
           permissions: parseInt(this.$route.query.permissions as string, 10)
         }
