@@ -19,6 +19,7 @@ export class APIApplicationsData {
     public logoUrl = '';
     public name = '';
     public description = '';
-    public websiteurl = '';
+    public websiteUrl = '';
+    public authorizationCallbackUrl = '';
     public connectedPlatforms: string[] = [];
 }

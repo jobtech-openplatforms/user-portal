@@ -2,6 +2,8 @@ DONE:
 
 
 TODO:
+- hämta callbackurl från api
+
 - add-connection
   - email based
     - anropa funktionen
@@ -12,8 +14,11 @@ TODO:
     - ej bekräftat adress
 
   -lägg till loaderfunktion på knappar
+    - beslut om nödvändigt?
     - disabled
     - rotating loader symbol
+
+- flytta complete till redan när kopplingen är klar?
 
 - error handling
   - no connectionstate on connectapp

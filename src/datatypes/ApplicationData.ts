@@ -9,7 +9,8 @@ export class ApplicationData {
         newData.logoUrl = data.logoUrl || AssetsManager.getLogoPath(data.name);
         newData.name = data.name;
         newData.description = data.description;
-        newData.url = data.websiteurl;
+        newData.url = data.websiteUrl;
+        newData.callbackUrl = data.authorizationCallbackUrl;
 
         let connections: ApplicationConnectionData[] = [];
         if (data.connectedPlatforms) {
@@ -33,4 +34,5 @@ export class ApplicationData {
     public description = '';
     public url = '';
     public connectedPlatforms: ApplicationConnectionData[] = [];
+    public callbackUrl = '';
 }
