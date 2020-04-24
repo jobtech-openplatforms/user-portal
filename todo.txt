@@ -3,6 +3,7 @@ DONE:
 
 TODO:
 - hämta callbackurl från api
+- döp om 
 
 - add-connection
   - email based

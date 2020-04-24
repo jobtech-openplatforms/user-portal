@@ -66,7 +66,7 @@ export class OpenPlatformsService extends EventEmitter {
         try {
             const userData: UserData = await this.getUser(accessToken);
             let callbackurl = connectState.callbackurl;
-            let parameters = ['result=completed', 'openplatformsuserid=' + userData.id, 'state=' + connectState.state];
+            let parameters = ['result=completed', 'openplatformsuserid=' + userData.id, 'requestid=' + connectState.requestId];
             if (callbackurl.indexOf('?') > -1) {
                 callbackurl += '&' + parameters.join('&');
             } else {
@@ -98,7 +98,7 @@ export class OpenPlatformsService extends EventEmitter {
         localStorage.removeItem('loginState');
         if (window.opener === null) {
             let callbackurl = connectState.callbackurl;
-            let parameters = ['result=cancelled', 'state=' + connectState.state];
+            let parameters = ['result=cancelled', 'requestid=' + connectState.requestId];
             if (callbackurl.indexOf('?') > -1) {
                 callbackurl += '&' + parameters.join('&');
             } else {

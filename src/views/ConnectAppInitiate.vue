@@ -65,12 +65,13 @@ export default class ConnectAppInitiate extends Vue {
 
   private mounted() {
     localStorage.removeItem('loginState');
-    // test url: http://localhost:8080/initiate-connection?app=7NEAJI5VsdIVQzyoNt3Qp5ESk6DvxEqd&platform=5846584a-2719-48dd-bef2-83c6d7dbd421&state=user123&permissions=1
+    // test url: http://localhost:8080/initiate-connection?app=I3QqMnonxGKS9FlBw7FfZhenDhk7Y4Te&platform=5846584a-2719-48dd-bef2-83c6d7dbd421&permissions=1&requestid=test123456">
 
     if (
       this.$route.query.app
       && this.$route.query.platform
       && this.$route.query.permissions
+      && this.$route.query.requestid
     ) {
       const platformsPromise = axios.get(process.env.VUE_APP_CV_DATA_API_PATH + 'Platform/available', {
         headers: {
@@ -100,7 +101,7 @@ export default class ConnectAppInitiate extends Vue {
           route: 'connect-app',
           app,
           platform,
-          state: this.$route.query.state as string,
+          requestId: this.$route.query.requestid as string,
           callbackurl: app.callbackUrl,
           permissions: parseInt(this.$route.query.permissions as string, 10)
         }
