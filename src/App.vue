@@ -46,6 +46,10 @@ li {
   list-style: disc;
   margin-left: 17px;
 }
+
+.error-message {
+  color: red;
+}
 </style>
 
 <script lang="ts">

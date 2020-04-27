@@ -28,8 +28,14 @@
           <div v-if="emailValidationState=='WAITING'">
             <h2>Step 2: Click on the email link</h2>
             <p>
-              To verify your email, we have sent you a mail with a verification link.
-              Click on this link and then press the button to continue
+              To verify your email adress, we have sent a mail to
+              <b>{{email}}</b> with a verification link.
+              Click on the link in the email and then continue.
+            </p>
+            <p v-if="emailErrorMessage" class="error-message">
+              {{emailErrorMessage}}
+              <br />
+              <button class="button is-secondary" @click="onResendEmail()">Resend verification email</button>
             </p>
             <button class="button is-secondary is-large" @click="onCancel()">Cancel</button>
             <button class="button is-primary is-large" @click="onContinueEmail()">Email is validated</button>
@@ -49,7 +55,6 @@
 
 <style scoped>
 </style>
-
 
 <script lang="ts">
 import ConnectionDiagram from '../components/ConnectionDiagram.vue'
@@ -98,7 +103,27 @@ export default class ConnectAppAdd extends Vue {
   public onStartEmailVerification() {
     this.emailErrorMessage = '';
     if (this.validateEmail(this.email)) {
-      this.emailValidationState = 'WAITING';
+
+      this.auth.getAccessToken().then(
+        (accessToken: any) => {
+          this.openPlatforms.startEmailConnection(
+            accessToken,
+            this.appState.platform.platformId,
+            this.appState.app.appId,
+            this.email
+          ).then(
+            (isWaitingForEmailVerification) => {
+              if (isWaitingForEmailVerification === true) {
+                this.emailValidationState = 'WAITING';
+              } else {
+                this.$router.push('/completed-connection');
+              }
+            },
+            (e) => {
+              this.emailErrorMessage = "Could't send verification email";
+            }
+          )
+        });
     } else {
       this.emailErrorMessage = 'Please enter a valid email adress';
     }
@@ -109,8 +134,27 @@ export default class ConnectAppAdd extends Vue {
     return re.test(String(email).toLowerCase());
   }
 
+  public onResendEmail() {
+    this.onStartEmailVerification();
+  }
+
   public onContinueEmail() {
-    console.log('onContinueEmail');
+    this.emailErrorMessage = '';
+
+    this.auth.getAccessToken().then(
+      (accessToken: any) => {
+        this.openPlatforms.checkIfEmailIsAlreadyValidated(
+          accessToken,
+          this.email
+        ).then(
+          () => {
+            this.$router.push('/completed-connection');
+          },
+          (e) => {
+            this.emailErrorMessage = 'Email not yet verified, if you cannot find the email wait a couple of minutes and check that is has not reached your spam folder.';
+          }
+        )
+      });
   }
 
   public onContinueOath() {

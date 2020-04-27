@@ -6,6 +6,7 @@ import ConnectAppInitiate from './views/ConnectAppInitiate.vue';
 import ConnectAppAdd from './views/ConnectAppAdd.vue';
 import ConnectAppCompleted from './views/ConnectAppCompleted.vue';
 import MyConnections from './views/MyConnections.vue';
+import VerifyEmailRoute from './views/VerifyEmailRoute.vue';
 
 Vue.use(Router);
 
@@ -29,6 +30,11 @@ export default new Router({
     {
       path: '/add-connection',
       component: ConnectAppAdd,
+      props: true
+    },
+    {
+      path: '/verify-email',
+      component: VerifyEmailRoute,
       props: true
     },
     {

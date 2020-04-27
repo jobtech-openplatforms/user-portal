@@ -15,6 +15,55 @@ export interface UserData {
 }
 
 export class OpenPlatformsService extends EventEmitter {
+    startEmailConnection(accessToken: any, platformId: string, applicationId: string, email: string) {
+        return new Promise((resolve, reject) => {
+            axios.post(process.env.VUE_APP_CV_DATA_API_PATH + 'PlatformUser/connect-user-to-email-platform',
+                {
+                    platformUserEmailAddress: email,
+                    platformId,
+                    applicationId
+                },
+                {
+                    headers: {
+                        Accept: 'application/json',
+                        Authorization: `Bearer ${accessToken}`
+                    }
+                }).then(
+                    (r) => {
+                        resolve(r.data.state === 'AwaitingEmailVerification');
+                    },
+                    (e) => {
+                        reject({ e: 'Could not connect to Open Platforms', error: e });
+                    }
+                );
+        });
+    }
+
+    checkIfEmailIsAlreadyValidated(accessToken: any, email: string) {
+        return new Promise((resolve, reject) => {
+            axios.get(process.env.VUE_APP_CV_DATA_API_PATH + 'User',
+                {
+                    headers: {
+                        Accept: 'application/json',
+                        Authorization: `Bearer ${accessToken}`
+                    }
+                }).then(
+                    (r) => {
+                        const userEmails: Array<{ email: string, state: string }> = r.data.userEmails;
+                        const isVerified = userEmails.find((e) => { e.email === email && e.state === 'Verified ' }) !== undefined;
+                        if (isVerified) {
+                            resolve();
+                        } else {
+                            reject({ e: 'Email is not verified yet.' });
+                        }
+                    },
+                    (e) => {
+                        reject({ e: 'Could check ig email was verified yet.', error: e });
+                    }
+                );
+        });
+    }
+
     startOauthConnection(accessToken: any, platformId: string, applicationId: string, callbackUri: string) {
         return new Promise((resolve, reject) => {
             axios.post(process.env.VUE_APP_CV_DATA_API_PATH + 'PlatformUser/start-connect-user-to-oauth-platform',
@@ -109,5 +158,16 @@ export class OpenPlatformsService extends EventEmitter {
         else {
             window.close();
         }
+    }
+
+    verifyEmail(promptId: string) {
+        const url = 'emailvalidation/callback?prompt_id=' + promptId + '&accept=true';
+        return axios.get(
+            process.env.VUE_APP_CV_DATA_API_PATH + url,
+            {
+                headers: {
+                    Accept: 'application/json',
+                }
+            });
     }
 }
