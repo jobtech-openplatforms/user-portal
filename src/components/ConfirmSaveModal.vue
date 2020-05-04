@@ -82,7 +82,7 @@ export default class ConfirmSaveModal extends Vue {
       return;
     }
     this.isSaveInProgress = true;
-    const loadingComponent = this.$buefy.loading.open({});
+    const loadingComponent = this.$buefy.loading.open({ isFullPage: true, canCancel: false });
 
     this.dispatch(new Actions.SaveState(this.state, this.$auth)).then(
       () => {

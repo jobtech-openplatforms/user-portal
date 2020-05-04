@@ -76,9 +76,13 @@ export default class ConnectAppCompleted extends Vue {
   public onFinish() {
     this.auth.getAccessToken().then(
       (accessToken: any) => {
+        const loadingComponent = this.$buefy.loading.open({});
         this.openPlatforms.completeConnectionFlow(accessToken, this.appState).then(
-          ()=>{},
           ()=>{
+            loadingComponent.close();
+          },
+          ()=>{
+            loadingComponent.close();
             this.isDataFetched = false;
             this.isDataError=true;
             this.errorMessage = 'Could not complete connection to '+this.appState.app.name+". Please try again.";

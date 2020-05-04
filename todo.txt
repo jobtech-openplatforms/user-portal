@@ -2,35 +2,25 @@ DONE:
 
 
 TODO:
-- hämta callbackurl från api
-- döp om 
-
-- add-connection
-  - email based
-    - anropa funktionen
-    - vänteläge
-    - kolla om verifierad
-    - cancel
-    - felaktig mailadress?
-    - ej bekräftat adress
-
-  -lägg till loaderfunktion på knappar
-    - beslut om nödvändigt?
-    - disabled
-    - rotating loader symbol
-
-- flytta complete till redan när kopplingen är klar?
-
+Testing:
+- testa live
+- testprotokoll
 - error handling
   - no connectionstate on connectapp
   - no connectionstate on connectappcompleted
   - already connected to freelancer but revoked?
   - not able to save changes in user portal
   - check why connect app thinks it's logged out
-
   - cancel connection
     - get correct return url
     - error if missing?
+
+- add-connection
+  - email based
+    - mailadress används inte på platformen?
+    - dubbelkoll att auth-email inte behöver bekräftas
+
+- flytta complete till redan när kopplingen är klar, dvs inte behöva klicka på knapp?
 
 - ladd mätare
   - första sidan
@@ -42,8 +32,5 @@ TODO:
 - ska vi göra det tydligare med två knappar på inloggningssidor (create account/login)
 
 My connections:
-- bug: loader när man sparar ser konstig ut ersätt med egen loader
-- bug när man tar bort plattform helt utan att först ta bort connected apps
+- dubbelkolla bug när man tar bort plattform helt utan att först ta bort connected apps
 - kolla över spara-meddelande, göra mer lättsmält?
-
-

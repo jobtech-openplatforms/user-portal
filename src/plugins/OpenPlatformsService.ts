@@ -50,7 +50,9 @@ export class OpenPlatformsService extends EventEmitter {
                 }).then(
                     (r) => {
                         const userEmails: Array<{ email: string, state: string }> = r.data.userEmails;
-                        const isVerified = userEmails.find((e) => { e.email === email && e.state === 'Verified ' }) !== undefined;
+                        const isVerified = userEmails.find((e) => {
+                            return e.email === email && e.state === 'Verified';
+                        }) !== undefined;
                         if (isVerified) {
                             resolve();
                         } else {

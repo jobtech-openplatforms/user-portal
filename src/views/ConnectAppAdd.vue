@@ -35,7 +35,7 @@
             <p v-if="emailErrorMessage" class="error-message">
               {{emailErrorMessage}}
               <br />
-              <button class="button is-secondary" @click="onResendEmail()">Resend verification email</button>
+              <a class="resend-email-link" @click="onResendEmail()">Resend verification email</a>
             </p>
             <button class="button is-secondary is-large" @click="onCancel()">Cancel</button>
             <button class="button is-primary is-large" @click="onContinueEmail()">Email is validated</button>
@@ -103,7 +103,7 @@ export default class ConnectAppAdd extends Vue {
   public onStartEmailVerification() {
     this.emailErrorMessage = '';
     if (this.validateEmail(this.email)) {
-
+      const loadingComponent = this.$buefy.loading.open({});
       this.auth.getAccessToken().then(
         (accessToken: any) => {
           this.openPlatforms.startEmailConnection(
@@ -113,6 +113,7 @@ export default class ConnectAppAdd extends Vue {
             this.email
           ).then(
             (isWaitingForEmailVerification) => {
+              loadingComponent.close();
               if (isWaitingForEmailVerification === true) {
                 this.emailValidationState = 'WAITING';
               } else {
@@ -120,6 +121,7 @@ export default class ConnectAppAdd extends Vue {
               }
             },
             (e) => {
+              loadingComponent.close();
               this.emailErrorMessage = "Could't send verification email";
             }
           )
@@ -139,6 +141,7 @@ export default class ConnectAppAdd extends Vue {
   }
 
   public onContinueEmail() {
+    const loadingComponent = this.$buefy.loading.open({});
     this.emailErrorMessage = '';
 
     this.auth.getAccessToken().then(
@@ -149,15 +152,18 @@ export default class ConnectAppAdd extends Vue {
         ).then(
           () => {
             this.$router.push('/completed-connection');
+            loadingComponent.close();
           },
           (e) => {
             this.emailErrorMessage = 'Email not yet verified, if you cannot find the email wait a couple of minutes and check that is has not reached your spam folder.';
+            loadingComponent.close();
           }
         )
       });
   }
 
   public onContinueOath() {
+    const loadingComponent = this.$buefy.loading.open({});
     const baseUrl = window.location.protocol + '//' + window.location.host;
     this.auth.getAccessToken().then(
       (accessToken: any) => {
@@ -169,6 +175,7 @@ export default class ConnectAppAdd extends Vue {
         );
       },
       () => {
+        loadingComponent.close();
         this.$buefy.modal.open({
           parent: this,
           component: LoginNeededModal,

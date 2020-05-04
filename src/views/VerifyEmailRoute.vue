@@ -42,7 +42,11 @@ export default class VerifyEmailRoute extends Vue {
       (e) => {
         this.isDataFetched = true;
         this.isDataError = true;
-        this.errorMessage = JSON.stringify(e);
+        if (e.message.indexOf('400') > -1) {
+          this.errorMessage = 'The verification link may have expired. This happens if you asked for a new verification, check if you have a more recent verification mail in your inbox and use that link instead.';
+        } else {
+          this.errorMessage = 'The verification was incorrect, please try again or contact Open Platforms support. Error message:' + JSON.stringify(e);;
+        }
       }
     )
   }

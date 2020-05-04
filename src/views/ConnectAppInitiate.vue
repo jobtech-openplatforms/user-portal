@@ -73,6 +73,7 @@ export default class ConnectAppInitiate extends Vue {
       && this.$route.query.permissions
       && this.$route.query.requestid
     ) {
+      const loadingComponent = this.$buefy.loading.open({});
       const platformsPromise = axios.get(process.env.VUE_APP_CV_DATA_API_PATH + 'Platform/available', {
         headers: {
           Accept: 'application/json',
@@ -86,6 +87,7 @@ export default class ConnectAppInitiate extends Vue {
         }
       });
       Promise.all([platformsPromise, appPromise]).then((r) => {
+        loadingComponent.close();
         const platforms = r[0].data as APIPlatformData[];
         const apiPlatformData = platforms.find((p) => p.platformId === this.$route.query.platform) as APIPlatformData;
         const platform = PlatformData.fromAPIData(apiPlatformData);
@@ -108,6 +110,7 @@ export default class ConnectAppInitiate extends Vue {
         this.isDataFetched = true;
       },
         () => {
+          loadingComponent.close();
           this.isDataError = true;
           this.errorMessage = 'Could not access data from the application/platform from Open Platforms. Please reload the page or check that the url is correct.';
         });
@@ -118,6 +121,7 @@ export default class ConnectAppInitiate extends Vue {
   }
 
   public onLogin() {
+    const loadingComponent = this.$buefy.loading.open({});
     localStorage.setItem('loginState', JSON.stringify(this.appState));
     this.dispatch(new Actions.Login(this.$auth));
   }
