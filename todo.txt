@@ -6,6 +6,10 @@ Testing:
 - testa live
 - testprotokoll
 - error handling
+  - not logged in
+    - dashboard
+    - add connection continue
+    - finish
   - no connectionstate on connectapp
   - no connectionstate on connectappcompleted
   - already connected to freelancer but revoked?
@@ -14,6 +18,9 @@ Testing:
   - cancel connection
     - get correct return url
     - error if missing?
+
+  - dashboard
+    - load proper aplication icon
 
 - add-connection
   - email based
