@@ -1,6 +1,6 @@
 <template>
   <div class="permissions-description">
-    <ul v-if="permissions===1">
+    <ul id="access-data-list" class="panel" v-if="permissions===1">
       <li>The number of gigs you have completed</li>
       <li>The average rating you have received from clients</li>
     </ul>
