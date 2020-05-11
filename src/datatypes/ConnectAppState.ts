@@ -7,6 +7,7 @@ export interface ConnectAppState {
     app: ApplicationData;
     platform: PlatformData;
     callbackurl: string;
+    returnurl: string;
     requestId: string;
     permissions: number;
 }

@@ -15,13 +15,14 @@ export interface UserData {
 }
 
 export class OpenPlatformsService extends EventEmitter {
-    startEmailConnection(accessToken: any, platformId: string, applicationId: string, email: string) {
+    startEmailConnection(accessToken: any, platformId: string, applicationId: string, email: string, permissions: number) {
         return new Promise((resolve, reject) => {
             axios.post(process.env.VUE_APP_CV_DATA_API_PATH + 'PlatformUser/connect-user-to-email-platform',
                 {
                     platformUserEmailAddress: email,
                     platformId,
-                    applicationId
+                    applicationId,
+                    platformDataClaim: this.getDataClaimFromPermission(permissions)
                 },
                 {
                     headers: {
@@ -66,13 +67,14 @@ export class OpenPlatformsService extends EventEmitter {
         });
     }
 
-    startOauthConnection(accessToken: any, platformId: string, applicationId: string, callbackUri: string) {
+    startOauthConnection(accessToken: any, platformId: string, applicationId: string, callbackUri: string, permissions: number) {
         return new Promise((resolve, reject) => {
             axios.post(process.env.VUE_APP_CV_DATA_API_PATH + 'PlatformUser/start-connect-user-to-oauth-platform',
                 {
                     callbackUri,
                     platformId,
-                    applicationId
+                    applicationId,
+                    platformDataClaim: this.getDataClaimFromPermission(permissions)
                 },
                 {
                     headers: {
@@ -94,6 +96,14 @@ export class OpenPlatformsService extends EventEmitter {
         });
     }
 
+    getDataClaimFromPermission(permissions: number) {
+        let dataClaim: "Aggregated" | "Full" = "Aggregated";
+        if (permissions === 2) {
+            dataClaim = "Full";
+        }
+        return dataClaim;
+    }
+
     getUser(accessToken: any) {
         return new Promise<UserData>((resolve, reject) => {
             axios.get(process.env.VUE_APP_CV_DATA_API_PATH + 'User',
@@ -113,49 +123,53 @@ export class OpenPlatformsService extends EventEmitter {
         });
     }
 
-    async completeConnectionFlow(accessToken: any, connectState: ConnectAppState) {
-        try {
-            const userData: UserData = await this.getUser(accessToken);
-            let callbackurl = connectState.callbackurl;
-            let parameters = ['result=completed', 'openplatformsuserid=' + userData.id, 'requestid=' + connectState.requestId];
-            if (callbackurl.indexOf('?') > -1) {
-                callbackurl += '&' + parameters.join('&');
-            } else {
-                callbackurl += '?' + parameters.join('&');
-            }
-
-            if (window.opener === null) {
-                localStorage.removeItem('loginState');
-                window.location.href = connectState.callbackurl as string;
-                return;
-            }
-
-            const result = await axios.get(callbackurl,
-                {
-                    headers: {
-                        Accept: 'application/json'
-                    }
+    async connectUser(accessToken: any, connectState: ConnectAppState) {
+        const userData: UserData = await this.getUser(accessToken);
+        let callbackurl = connectState.callbackurl;
+        let parameters = ['openplatformsuserid=' + userData.id, 'requestid=' + connectState.requestId];
+        if (callbackurl.indexOf('?') > -1) {
+            callbackurl += '&' + parameters.join('&');
+        } else {
+            callbackurl += '?' + parameters.join('&');
+        }
+        const result = await axios.get(callbackurl,
+            {
+                headers: {
+                    Accept: 'application/json'
                 }
-            );
-            localStorage.removeItem('loginState');
-            window.close();
+            }
+        );
+        return;
+    }
 
-        } catch (err) {
-            throw ({ e: 'Could not register connection at ' + connectState.app + ". Error: " + err });
+    completeConnectionFlow(connectState: ConnectAppState) {
+        localStorage.removeItem('loginState');
+        if (window.opener === null) {
+            let returnurl = connectState.returnurl;
+            let parameters = ['result=completed', 'requestid=' + connectState.requestId];
+            if (returnurl.indexOf('?') > -1) {
+                returnurl += '&' + parameters.join('&');
+            } else {
+                returnurl += '?' + parameters.join('&');
+            }
+            window.location.href = returnurl;
+        }
+        else {
+            window.close();
         }
     }
 
     cancelConnectionFlow(connectState: ConnectAppState) {
         localStorage.removeItem('loginState');
         if (window.opener === null) {
-            let callbackurl = connectState.callbackurl;
+            let returnurl = connectState.returnurl;
             let parameters = ['result=cancelled', 'requestid=' + connectState.requestId];
-            if (callbackurl.indexOf('?') > -1) {
-                callbackurl += '&' + parameters.join('&');
+            if (returnurl.indexOf('?') > -1) {
+                returnurl += '&' + parameters.join('&');
             } else {
-                callbackurl += '?' + parameters.join('&');
+                returnurl += '?' + parameters.join('&');
             }
-            window.location.href = connectState.callbackurl as string;
+            window.location.href = returnurl;
         }
         else {
             window.close();

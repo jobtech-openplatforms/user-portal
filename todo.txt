@@ -2,6 +2,13 @@ DONE:
 
 
 TODO:
+- lägg till returnUrl (för redirect flow)
+  - ta emot
+  - använd
+- anropa connectUser redan när man loggat in
+
+- kolla vad som händer om man är utloggad när man försäker spara i dashboard
+
 Testing:
 - testa live
 - testprotokoll
@@ -20,7 +27,7 @@ Testing:
     - error if missing?
 
   - dashboard
-    - load proper aplication icon
+    - load proper application icon
 
 - add-connection
   - email based

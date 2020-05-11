@@ -18,10 +18,7 @@
           >Read more</a>
         </p>
         <h4>{{appState.app.name}} want to access the following data from {{appState.platform.name}}:</h4>
-        <ul>
-          <li>The number of gigs you have completed</li>
-          <li>The average rating you have received from clients</li>
-        </ul>
+        <PermissionsDescription :permissions="appState.permissions" />
         <p>Login or create an account to add this connections!</p>
         <button class="button is-secondary is-large" @click="onCancel()">Cancel</button>
         <button class="button is-primary is-large" @click="onLogin()">Sign in to Open Platforms</button>
@@ -35,6 +32,7 @@
 
 
 <script lang="ts">
+import PermissionsDescription from '../components/PermissionsDescription.vue'
 import ConnectionDiagram from '../components/ConnectionDiagram.vue'
 import { Component, Prop, Vue } from "vue-property-decorator";
 import { TypedState } from "../datatypes/TypedState";
@@ -48,9 +46,7 @@ import { ApplicationData } from '../datatypes/ApplicationData';
 import { OpenPlatformsService } from '../plugins/OpenPlatformsService';
 
 @Component({
-  components: {    ConnectionDiagram
-
-  }
+  components: { ConnectionDiagram, PermissionsDescription }
 })
 export default class ConnectAppInitiate extends Vue {
   public isDataFetched = false;
@@ -72,6 +68,7 @@ export default class ConnectAppInitiate extends Vue {
       && this.$route.query.platform
       && this.$route.query.permissions
       && this.$route.query.requestid
+      && (this.$route.query.returnurl || window.opener !== null)
     ) {
       const loadingComponent = this.$buefy.loading.open({});
       const platformsPromise = axios.get(process.env.VUE_APP_CV_DATA_API_PATH + 'Platform/available', {
@@ -105,6 +102,7 @@ export default class ConnectAppInitiate extends Vue {
           platform,
           requestId: this.$route.query.requestid as string,
           callbackurl: app.callbackUrl,
+          returnurl: this.$route.query.returnurl as string,
           permissions: parseInt(this.$route.query.permissions as string, 10)
         }
         this.isDataFetched = true;

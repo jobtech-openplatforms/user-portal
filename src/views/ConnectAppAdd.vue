@@ -91,6 +91,7 @@ export default class ConnectAppAdd extends Vue {
   private dispatch: (a: ActionBase) => Promise<void> = this.$store.dispatch;
 
   private mounted() {
+    const loadingComponent = this.$buefy.loading.open({});
     this.appState = JSON.parse(localStorage.getItem('loginState') as string);
     if (this.appState) {
       this.isDataFetched = true;
@@ -98,6 +99,21 @@ export default class ConnectAppAdd extends Vue {
       this.isDataError = true;
       this.errorMessage = 'Could not find connection data, please try again.';
     }
+    this.auth.getAccessToken().then((token) => {
+      this.openPlatforms.connectUser(token, this.appState).then(() => {
+        loadingComponent.close();
+      }).catch(() => {
+        loadingComponent.close();
+        this.isDataError = true;
+        this.errorMessage = 'Could not register Open Platform user to ' + this.appState.app.name;
+      });
+    }).catch(() => {
+      loadingComponent.close();
+      this.isDataError = true;
+      this.errorMessage = 'Could not find valid auth token.';
+    });
+
+
   }
 
   public onStartEmailVerification() {
@@ -110,7 +126,8 @@ export default class ConnectAppAdd extends Vue {
             accessToken,
             this.appState.platform.platformId,
             this.appState.app.appId,
-            this.email
+            this.email,
+            this.appState.permissions
           ).then(
             (isWaitingForEmailVerification) => {
               loadingComponent.close();
@@ -171,7 +188,8 @@ export default class ConnectAppAdd extends Vue {
           accessToken,
           this.appState.platform.platformId,
           this.appState.app.appId,
-          baseUrl + '/completed-connection'
+          baseUrl + '/completed-connection',
+          this.appState.permissions
         );
       },
       () => {
