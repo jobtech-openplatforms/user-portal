@@ -1,5 +1,5 @@
 <template>
-  <div class="connect-app-start-page page-content">
+  <div class="connect-app-start-page page-content narrow-content">
     <div v-if="!isDataFetched && !isDataError">
       <p>Loading...</p>
     </div>
@@ -9,28 +9,30 @@
     </div>
     <div v-if="isDataFetched">
       <div class="centered-content">
+        <h1>Access data from <strong>{{appState.platform.name}}</strong></h1>
         <ConnectionDiagram :state="appState" />
-        <h2>Access data from {{appState.platform.name}}</h2>
-        <p>
-          Open Platforms to let's you access your reputation data from connected gig platforms.
-          <a
-            href="https://openplatforms.org"
-          >Read more</a>
-        </p>
-        <h4>{{appState.app.name}} want to access the following data from {{appState.platform.name}}:</h4>
-        <ul>
+        <h2><strong>{{appState.app.name}}</strong> want to access the following data from {{appState.platform.name}}:</h2>
+        <ul id="access-data-list" class="panel">
           <li>The number of gigs you have completed</li>
           <li>The average rating you have received from clients</li>
         </ul>
-        <p>Login or create an account to add this connections!</p>
-        <button class="button is-secondary is-large" @click="onCancel()">Cancel</button>
-        <button class="button is-primary is-large" @click="onLogin()">Sign in to Open Platforms</button>
+        <p>Login or create an account to add these connections!</p>
+        <div class="buttons">
+          <button class="button is-secondary is-large" @click="onCancel()">Cancel</button>
+          <button class="button is-primary is-large" @click="onLogin()">Sign in to Open Platforms</button>
+        </div>
+        <p class="is-small">
+          Open Platforms to let's you access your reputation data from connected gig platforms.
+          <a href="https://openplatforms.org">Read more</a>
+        </p>
       </div>
     </div>
   </div>
 </template>
 
-<style scoped>
+<style lang="scss" scoped>
+    
+  
 </style>
 
 
@@ -131,3 +133,4 @@ export default class ConnectAppInitiate extends Vue {
   }
 }
 </script>
+

@@ -9,27 +9,31 @@
     </div>
     <div v-if="isDataFetched">
       <div class="centered-content">
+        <h2 v-if="appState.platform.authMechanism ==='Email' && emailValidationState=='START'">Step 1: Connect <strong>{{appState.platform.name}}</strong></h2>
+        <h2 v-if="appState.platform.authMechanism ==='Email' && emailValidationState=='WAITING'">Step 2: Click on the email link</h2>
+        <h2 v-if="appState.platform.authMechanism ==='Oauth2'">Connect {{appState.platform.name}}</h2>
+
         <ConnectionDiagram :state="appState" />
 
         <div v-if="appState.platform.authMechanism ==='Email'">
           <div v-if="emailValidationState=='START'">
-            <h2>Step 1: Connect {{appState.platform.name}}</h2>
-            <p>Enter the email adress you use on {{appState.platform.name}}</p>
-            <div>
+            <p>Enter the email address you use on {{appState.platform.name}}</p>
+            <div class="email-input">
               <input type="email" v-model="email" required />
               <p v-if="emailErrorMessage" class="error-message">{{emailErrorMessage}}</p>
             </div>
-            <button class="button is-secondary is-large" @click="onCancel()">Cancel</button>
-            <button
-              class="button is-primary is-large"
-              @click="onStartEmailVerification()"
-            >Validate email</button>
+            <div>
+              <button class="button is-secondary is-large" @click="onCancel()">Cancel</button>
+              <button
+                class="button is-primary is-large"
+                @click="onStartEmailVerification()"
+              >Validate email</button>
+            </div>
           </div>
           <div v-if="emailValidationState=='WAITING'">
-            <h2>Step 2: Click on the email link</h2>
-            <p>
+            <p class="email-sent-text">
               To verify your email adress, we have sent a mail to
-              <b>{{email}}</b> with a verification link.
+              <strong>{{email}}</strong> with a verification link.
               Click on the link in the email and then continue.
             </p>
             <p v-if="emailErrorMessage" class="error-message">
@@ -37,16 +41,20 @@
               <br />
               <a class="resend-email-link" @click="onResendEmail()">Resend verification email</a>
             </p>
-            <button class="button is-secondary is-large" @click="onCancel()">Cancel</button>
-            <button class="button is-primary is-large" @click="onContinueEmail()">Email is validated</button>
+            <div class="buttons">
+              <button class="button is-secondary is-large" @click="onCancel()">Cancel</button>
+              <button class="button is-primary is-large" @click="onContinueEmail()">Email is validated</button>
+            </div>
           </div>
         </div>
 
         <div v-if="appState.platform.authMechanism ==='Oauth2'">
           <h2>Connect {{appState.platform.name}}</h2>
           <p>You will now be redirected to {{appState.platform.name}} where you need to allow that Open Platforms can access your data</p>
-          <button class="button is-secondary is-large" @click="onCancel()">Cancel</button>
-          <button class="button is-primary is-large" @click="onContinueOath()">Continue</button>
+          <div class="buttons">
+            <button class="button is-secondary is-large" @click="onCancel()">Cancel</button>
+            <button class="button is-primary is-large" @click="onContinueOath()">Continue</button>
+          </div>
         </div>
       </div>
     </div>
@@ -54,6 +62,15 @@
 </template>
 
 <style scoped>
+.email-input
+{
+  margin:40px 0 20px;
+}
+
+.email-sent-text{
+  margin:60px;
+}
+
 </style>
 
 <script lang="ts">

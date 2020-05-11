@@ -1,5 +1,5 @@
 <template>
-  <div class="connect-app-start-page page-content">
+  <div class="connect-app-start-page page-content narrow-content">
     <div v-if="!isDataFetched && !isDataError">
       <p>Loading...</p>
     </div>
@@ -9,16 +9,15 @@
     </div>
     <div v-if="isDataFetched">
       <div class="centered-content">
+        <h1>You have now created a <strong>live connection!</strong></h1>
         <ConnectionDiagram :state="appState" />
-        <h2>You have now created a live connection!</h2>
-        <p> The following data from {{appState.platform.name}} is now sent to {{appState.app.name}}: </p>
-        <ul>
-            <li>Number of gigs you have completed</li>
-            <li>Average rating you have received from clients</li>
+        <h2><strong>The following data</strong> from {{appState.platform.name}} is now sent to {{appState.app.name}}: </h2>
+        <ul id="access-data-list" class="panel">
+          <li>Number of gigs you have completed</li>
+          <li>Average rating you have received from clients</li>
         </ul>
-            <p><b>Please note:</b>This is a live connection. Your data will be updated whenever you complete more gigs on Freelancer.
-              If you later want to revoke this connection, login to <a href="https://user.openplatforms.org">user.openplatforms.org</a></p>
-        </div>
+        <p><b>Please note:</b> This is a live connection. Your data will be updated whenever you complete more gigs on Freelancer.
+          If you later want to revoke this connection, login to <a href="https://user.openplatforms.org">user.openplatforms.org</a></p>
         <button class="button is-primary is-large" @click="onFinish()">Finish</button>
       </div>
     </div>

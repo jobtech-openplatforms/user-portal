@@ -3,7 +3,7 @@
     <p v-if="!isDataFetched">Loading...</p>
     <div class="login-container" v-if="isDataFetched">
       <div v-if="!isDataError">
-        <h2>Your email has been verified!</h2>
+        <h1>Your email has been <strong>verified!</strong></h1>
         <p class="is-large">You can now return to the Open Platforms app.</p>
       </div>
       <div v-if="isDataError">
