@@ -1,71 +1,67 @@
 <template>
   <div class="platform-display panel">
-    <div class="image-container">
-      <img v-if="platform.logoUrl" v-bind:src="platform.logoUrl" />
-    </div>
-    <div class="platform-content-container">
+    <div class="flex-row">
       <h3 class="overflow-elipsis">{{ platform.name }}</h3>
-      <p>{{ platform.description }}</p>
+      <div class="platform-active-container">
+        <b-switch
+          v-model="platform.isConnected"
+          v-on:change.native="onChangeActive($event.target.checked)"
+        />
+        <!--p v-if="platform.isConnected">Active</p>
+        <p v-if="!platform.isConnected">Inactive</p-->
+      </div>
     </div>
-    <div class="platform-active-container">
-      <b-switch
-        class="is-large"
-        v-model="platform.isConnected"
-        v-on:change.native="onChangeActive($event.target.checked)"
-      />
-      <p v-if="platform.isConnected">Active</p>
-      <p v-if="!platform.isConnected">Inactive</p>
+      <!-- <div class="platform-menu-container">
+        <button class="remove-button icon-button" @click="onRemove()">
+          <i class="far fa-times"></i>
+        </button>
+      </div>-->
+    <div class="flex-row">
+      <div class="image-container">
+        <img v-if="platform.logoUrl" v-bind:src="platform.logoUrl" />
+      </div>
+      <div class="platform-content-container">
+        <p>{{ platform.description }}</p>
+      </div>
     </div>
-    <!-- <div class="platform-menu-container">
-      <button class="remove-button icon-button" @click="onRemove()">
-        <i class="far fa-times"></i>
-      </button>
-    </div>-->
   </div>
+    
 </template>
 
-<style scoped>
+<style lang="scss" scoped>
 .platform-display {
-  display: flex;
-  flex-direction: row;
-}
-.image-container {
-  width: 116px;
-  height: 116px;
-  min-width: 116px;
-  border: 1px solid rgba(0, 0, 0, 0.2);
-  border-radius: 10px;
-  margin-right: 20px;
-  overflow: hidden;
-}
-@media (max-width: 600px) {
-  .image-container {
-    width: 50px;
-    height: 50px;
-    min-width: 50px;
-    margin-right: 10px;
+
+
+  &>*{
+    display:flex;
+    flex-direction:row;
   }
 }
+.image-container {
+  flex:0 0 65px;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  overflow: hidden;
+  margin-right:20px;
+}
+
 .image-container img {
   width: 100%;
   height: 100%;
 }
 .platform-content-container {
   width: 100%;
-  margin-right: 20px;
   overflow: hidden;
 }
 
-@media (max-width: 600px) {
-  .platform-content-container {
-    margin-right: 10px;
+.platform-active-container{
+  transform-origin:top right;
+  p {
+    margin: 0;
+    text-align: center;
   }
 }
 
-.platform-active-container p {
-  margin: 0;
-  text-align: center;
-}
 </style>
 
 <script lang="ts">
