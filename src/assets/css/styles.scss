@@ -1,117 +1,159 @@
 // @import "assets/css/checkbox-switch.css";
+@import "assets/css/_variables";
 
-*{
+* {
   box-sizing: border-box;
 }
 
-html{
-  background: #ececec;
+html {
+  background: #f8f8f8;
 }
 
 body {
-  font-family: "Avenir", Helvetica, Arial, sans-serif;
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 300;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: left;
-  color: #000000;
+  color: #444;
   padding: 0;
-  padding-top: 70px; 
+  padding-top: 130px;
   margin: 0;
+  font-size: 20px;
+  line-height: 1.3;
+  letter-spacing: 1.2px;
 }
+
 #page-container {
-  padding: 20px;
+  padding: 20px 40px;
 }
 
 @media (max-width: 600px) {
   #page-container {
-  padding: 20px 10px;
+    padding: 20px 10px;
   }
 }
 
-.page-content{
+.page-content {
   width: 100%;
-  max-width: 760px;
+  max-width: $page-content-max-width;
   margin-left: auto;
   margin-right: auto;
 }
-h1, h2, h3, h4, h5 {
-  display: flex;
-    align-items: center;
-    line-height: 1.1;
+
+.centered-content {
+  text-align: center;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5 {
+  font-weight: 300;
+  letter-spacing: 0;
+
+  &>strong {
+    color: $color-brand;
+    font-weight: 700;
+  }
 }
 
 h1 {
-  font-size: 60px;
+  font-size: 50px;
   margin: 0 0 20px 0;
 }
 
 h2 {
-  font-size: 30px;
-  margin: 0 0 10px 0;
+  font-size: 32px;
+  margin: 0 0 25px 0;
 }
 
 h3 {
-  font-size: 22px; 
-  margin: 0 0 5px 0;
+  font-size: 22px;
+  margin: 0 0 14px 0;
+  font-family: 'Roboto', sans-serif;
 }
 
 h4 {
-  font-size: 18px; 
+  font-size: 18px;
   margin: 0 0 5px 0;
 }
 
+
 p {
-  font-size: 16px; 
+  font-size: 19px;
   margin: 10px 0 10px 0;
-}
 
-p.is-large {
-  font-size: 22px; 
-}
-
-@media (max-width: 600px) {
-  h1 {
-    font-size: 45px;
-    margin: 0 0 20px 0;
+  &.is-large {
+    font-size: 22px;
   }
-  
+
+  &.is-small {
+    font-size: 0.7em;
+  }
+
+  &.color-brand {
+    color: $color-brand;
+  }
+}
+
+
+
+@media (max-width: 680px) {
+  h1 {
+    font-size: 32px;
+    margin: 0 0 20px 0;
+    line-height: 1.1;
+  }
+
   h2 {
     font-size: 22px;
     margin: 0 0 10px 0;
   }
-  
+
   h3 {
-    font-size: 18px; 
+    font-size: 18px;
     margin: 0 0 5px 0;
   }
-  
+
   h4 {
-    font-size: 14px; 
+    font-size: 14px;
     margin: 0 0 5px 0;
   }
 
   p {
-    font-size: 14px; 
+    font-size: 14px;
     margin: 10px 0 10px 0;
   }
 
+  p {
+    font-size: 16px
+  }
+
   p.is-large {
-    font-size: 17px;
+    font-size: 18px;
   }
 }
 
-hr{
-  margin: 20px 0;
-    background-color: #dbdbdb;
-    height: 1px;
-    border: none;
-    display: block;
+a {
+  color: $color-brand;
 }
 
-.modal-card-head, .modal-card-foot {
+hr {
+  margin: 0 0 15px;
+  background-color: #dbdbdb;
+  height: 1px;
+  border: none;
+  display: block;
+}
+
+.modal-card-head,
+.modal-card-foot {
   background-color: white;
   justify-content: space-between;
 }
+
 .modal .animation-content {
   padding: 20px;
 }
@@ -129,56 +171,79 @@ hr{
 }
 
 @media (max-width: 600px) {
-.panel {
+  .panel {
+    padding: 15px;
+  }
+}
+
+input {
   padding: 15px;
-}
+  display: inline-block;
+  width: 400px;
+  max-width: 100%;
+  font-family: "Open Sans", sans-serif;
+  font-size: inherit;
 }
 
-.button, 
+.button,
 .button:focus {
-  border: 1px solid #bfbdbd;
-  border-radius: 6px;
-  font-size: 18px;
-  font-weight: bold;
-  min-height: 40px;
-  padding: 0 30px;
-  margin-right: 10px;
+  border: 1px solid $color-brand;
+  border-radius: 3px;
+  font-size: 16px;
+  padding: 0 22px;
+  margin: 10px;
+  font-weight: 300;
+  color: $color-brand;
 }
 
-.button:last-child{
+.button.flat {
+  font-family: 'Roboto', sans-serif;
+  color: $color-brand;
+  font-size: 15px;
+  font-weight: 700;
+  white-space: normal;
+  border: 0;
+  padding: 0;
+}
+
+.button:first-child {
+  margin-left: 0;
+}
+
+.button:last-child {
   margin-right: 0;
 }
 
 .button.is-primary,
-.button.is-primary:focus{
+.button.is-primary:focus,
+.button.is-primary:hover {
   border: none;
-  background: #ff6b00;
+  background: $color-brand;
   color: white;
 }
 
-.button.is-large{
+.button.is-large {
   padding: 0 40px;
-  font-size: 22px;
-  min-height: 50px;
+  font-size: 26px;
 }
 
 .button:focus {
-  box-shadow: 0 0 1px 1px #2196F3!important;
   outline: none;
 }
 
-@media (max-width: 600px) {
+@media (max-width: 680px) {
+
   .button,
   .button:focus {
     font-size: 14px;
     padding: 0px 12px;
   }
 
-  .button.is-large{
+  .button.is-large {
     padding: 0 20px;
     font-size: 22px;
-    min-height: 50px;
   }
+
 }
 
 .icon-button {
@@ -187,24 +252,53 @@ hr{
   overflow: hidden;
   border-radius: 200px;
 }
+
 .icon-button i {
   font-size: 26px;
 }
 
-.switch input[type=checkbox]:checked + .check {
-  background: #ff6b00;
+.buttons {
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+  margin: 20px auto;
+
+  @media (max-width: 680px) {
+    flex-direction: column;
+
+    .button:not(.is-primary) {
+      border: 0;
+      padding: 0;
+      margin: 10px 0;
+      text-decoration: underline;
+      font-size: 80%;
+      display: block;
+      background: transparent;
+      order: 2;
+      display: inline-block;
+      clear: both;
+    }
+  }
 }
-.switch:hover input[type=checkbox]:checked + .check {
-  background: #ff6b00;
+
+.switch input[type=checkbox]:checked+.check {
+  background: $color-brand;
 }
-.switch input[type=checkbox]:focus + .check {
-  box-shadow: 0 0 1px 1px #2196F3!important;;
+
+.switch:hover input[type=checkbox]:checked+.check {
+  background: $color-brand;
 }
+
+.switch input[type=checkbox]:focus+.check {
+  box-shadow: 0 0 1px 1px #2196F3 !important;
+  ;
+}
+
 .switch .control-label {
   padding-left: 1px;
 }
 
-.overflow-elipsis{
+.overflow-elipsis {
   text-overflow: ellipsis;
   overflow: hidden;
   width: 100%;
@@ -214,14 +308,34 @@ hr{
 
 @media (min-width: 600px) {
   .mobile-visible {
-  display: initial;
+    display: initial;
   }
 }
 
 @media (max-width: 600px) {
   .mobile-invisible {
-  display: none;
-  } 
+    display: none;
+  }
 }
 
 
+.narrow-content {
+  max-width: $narrow-screen;
+}
+
+#access-data-list {
+  margin: 50px auto;
+  max-width: 600px;
+  padding: 40px;
+  letter-spacing: initial;
+
+  li {
+    text-align: left;
+    list-style-type: circle;
+    font-size: 120%;
+
+    &:not(:last-child) {
+      padding-bottom: 10px;
+    }
+  }
+}

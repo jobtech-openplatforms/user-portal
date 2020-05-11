@@ -6,22 +6,25 @@
     <div v-if="isDataError">
       <p>Couldn't load your settings, please try again.</p>
     </div>
-    <div v-if="isDataFetched">
-      <h2>You have connected the following data sources</h2>
-      <PlatformDisplay
-        v-for="connection in connections"
-        v-bind:key="connection.platformId"
-        v-bind:platform="connection"
-      />
-      <p v-if="connections.length===0">You currently have no connected platforms.</p>
-      <hr />
-      <h2>The following apps can access your data</h2>
-      <ApplicationDisplay
-        v-for="application in applications"
-        v-bind:key="application.appId"
-        v-bind:application="application"
-      />
-      <p v-if="applications.length===0">You currently have no connected applications.</p>
+    <div id="lists" v-if="isDataFetched">
+      <div id="list-data-sources">
+        <h2>You have connected the following <strong>data sources</strong>:</h2>
+        <PlatformDisplay
+          v-for="connection in connections"
+          v-bind:key="connection.platformId"
+          v-bind:platform="connection"
+        />
+        <p v-if="connections.length===0">You currently have no connected platforms.</p>
+      </div>
+      <div id="list-apps">
+        <h2>The following apps can <strong>access your data</strong>:</h2>
+        <ApplicationDisplay
+          v-for="application in applications"
+          v-bind:key="application.appId"
+          v-bind:application="application"
+        />
+        <p v-if="applications.length===0">You currently have no connected applications.</p>
+      </div>
     </div>
   </div>
 </template>
@@ -92,3 +95,21 @@ export default class MyConnections extends Vue {
   }
 }
 </script>
+
+<style lang="scss">
+  #lists{
+    &>*{
+      margin-bottom:60px;
+    }
+    @media (min-width:940px){
+
+      display:flex;
+      flex-direction:row;
+
+      &>*{
+        flex:1;
+        margin:20px;
+      }
+    }
+  }
+</style>

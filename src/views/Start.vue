@@ -2,7 +2,7 @@
   <div class="start page-content">
     <div class="login-container">
       <div>
-        <h1>Get control over your reputation data</h1>
+        <h1>Get control over your <strong>reputation data</strong></h1>
         <p
           class="is-large"
         >The open platform API give you the ability to access your gig reputation data from the platforms where you have worked, and share it with any platform you want.</p>
@@ -19,12 +19,17 @@
   </div>
 </template>
 
-<style scoped>
+<style lang="scss" scoped>
 .login-container {
   display: flex;
   flex-direction: row;
   align-items: center;
   margin-top: 10vh;
+
+  button{
+    display:block;
+    margin:40px auto;
+  }
 }
 .login-container div {
   width: 50%;

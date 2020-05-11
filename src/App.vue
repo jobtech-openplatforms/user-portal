@@ -1,17 +1,10 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <div>
-        <img class="app-logo-icon" src="./assets/images/open-platforms-logo-icon.png" />
-        <img
-          class="app-logo-text"
-          v-bind:class="{ 'mobile-invisible': isLoggedIn }"
-          src="./assets/images/open-platforms-logo-text.png"
-        />
-      </div>
-      <div>
+    <div id="topbar">
+      <div id="nav">
+        <img class="app-logo-icon" src="./assets/images/open_platforms_logo.svg" />
         <button v-if="state.isChanged" v-on:click="onSave()" class="button is-primary">Save changes</button>
-        <button v-if="state.isLoggedIn" class="button" v-on:click="onLogout()">Log out</button>
+        <button v-if="state.isLoggedIn" class="button flat" v-on:click="onLogout()">Log out</button>
       </div>
     </div>
 
@@ -24,21 +17,29 @@
 <style lang="scss">
 @import "assets/css/styles.scss";
 
+#topbar{
+  background:#fff;
+  position: fixed;
+  top: 0;
+  width:100vw;
+  z-index:1;
+}
+
 #nav {
-  padding: 10px 20px;
+  padding: 10px 0;
   background: white;
-  width: 100%;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  position: fixed;
-  top: 0;
+  width:$page-content-max-width;
+  max-width: calc(100vw - 2*30px);
+  margin:auto;
 }
 
 .app-logo-icon,
 .app-logo-text {
-  max-height: 45px;
+  max-height: 83px;
   margin-right: 4px;
 }
 
