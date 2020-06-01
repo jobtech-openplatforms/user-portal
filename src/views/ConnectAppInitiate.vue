@@ -72,13 +72,13 @@ export default class ConnectAppInitiate extends Vue {
     localStorage.removeItem('loginState');
     // test url: http://localhost:8080/initiate-connection?app=I3QqMnonxGKS9FlBw7FfZhenDhk7Y4Te&platform=5846584a-2719-48dd-bef2-83c6d7dbd421&permissions=1&requestid=test123456">
 
-    if (
-      this.$route.query.app
-      && this.$route.query.platform
-      && this.$route.query.permissions
-      && this.$route.query.requestid
-      && (this.$route.query.returnurl || window.opener !== null)
-    ) {
+    const missingParameters = [];
+    if (!this.$route.query.app) { missingParameters.push("app"); }
+    if (!this.$route.query.platform) { missingParameters.push("platform"); }
+    if (!this.$route.query.permissions) { missingParameters.push("permissions"); }
+    if (!this.$route.query.requestid) { missingParameters.push("requestid"); }
+    if (!this.$route.query.returnurl && window.opener === null) { missingParameters.push("returnurl"); }
+    if (missingParameters.length === 0) {
       const loadingComponent = this.$buefy.loading.open({});
       const platformsPromise = axios.get(process.env.VUE_APP_CV_DATA_API_PATH + 'Platform/available', {
         headers: {
@@ -119,11 +119,11 @@ export default class ConnectAppInitiate extends Vue {
         () => {
           loadingComponent.close();
           this.isDataError = true;
-          this.errorMessage = 'Could not access data from the application/platform from Open Platforms. Please reload the page or check that the url is correct.';
+          this.errorMessage = "Could not access data about application/platform from Open Platforms. Please make sure you are connected  to the internet and that the url includes the correct app and platform id's.";
         });
     } else {
       this.isDataError = true;
-      this.errorMessage = "Your link doesn't not include all necessary parameters, please check that you got the complete url from the application you want to access your data.";
+      this.errorMessage = "Your link doesn't not including the following required parameters: " + missingParameters.join(', ') + ". Please check that you got the complete url from the application you want to access your data.";
     }
   }
 
