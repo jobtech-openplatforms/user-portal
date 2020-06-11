@@ -5,23 +5,23 @@
     </header>
     <section class="modal-card-body">
       <p v-if="noPlatformsRemoved > 0">
-        You have deactived one or more platforms.
+        You have deactivated one or more platforms.
         This means that these platforms will be removed from your account and any saved data from
         that platform will also be removed. Applications will not be able to access new data from these platforms.
       </p>
       <p v-if="noApplicationsRemoved > 0">
-        You have deactived all connections to one or more applications.
+        You have deactivated all connections to one or more applications.
         These applications will be removed from your account and will not be able to access new data.
       </p>
 
       <div v-if="noApplicationsRemoved === 0 && noPlatformsRemoved=== 0">
         <p v-if="noInactiveAppPlatformConnections>0">
-          You have deactived one or more connections from a platforms to an apps.
-          These apps will no longer be able to access your data.
+          You have deactivated one or more connections from a platforms to an application.
+          These applications will no longer be able to access your data.
         </p>
         <p
           v-if="noInactiveAppPlatformConnections===0"
-        >All apps are now set to access data from all connected platforms.</p>
+        >All applications are now set to access data from all connected platforms.</p>
       </div>
     </section>
     <footer class="modal-card-foot">
