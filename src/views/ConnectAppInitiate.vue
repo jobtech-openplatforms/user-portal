@@ -14,17 +14,16 @@
           <strong>{{appState.platform.name}}</strong>
         </h1>
         <ConnectionDiagram :state="appState" />
-
+        <div class="buttons">
+          <button class="button is-secondary is-large" @click="onCancel()">Cancel</button>
+          <button class="button is-primary is-large" @click="onLogin()">Sign in to Open Platforms</button>
+        </div>
         <h2>
           <strong>{{appState.app.name}}</strong>
           want to access the following data from {{appState.platform.name}}:
         </h2>
         <PermissionsDescription :permissions="appState.permissions" />
         <p>Login or create an account to add these connections!</p>
-        <div class="buttons">
-          <button class="button is-secondary is-large" @click="onCancel()">Cancel</button>
-          <button class="button is-primary is-large" @click="onLogin()">Sign in to Open Platforms</button>
-        </div>
         <p class="is-small">
           Open Platforms to let's you access your reputation data from connected gig platforms.
           <a
