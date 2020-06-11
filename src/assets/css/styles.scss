@@ -7,6 +7,7 @@
 
 html {
   background: #f8f8f8;
+  min-height: 100vh;
 }
 
 body {
@@ -17,15 +18,21 @@ body {
   text-align: left;
   color: #444;
   padding: 0;
-  padding-top: 130px;
   margin: 0;
   font-size: 20px;
   line-height: 1.3;
   letter-spacing: 1.2px;
+  min-height: 100vh;
+}
+
+#app {
+  min-height: 100vh;
 }
 
 #page-container {
-  padding: 20px 40px;
+  padding: calc(60px + #{$topbar-height}) 40px 20px;
+  min-height: 100vh;
+  position: relative;
 }
 
 @media (max-width: 600px) {
@@ -39,6 +46,11 @@ body {
   max-width: $page-content-max-width;
   margin-left: auto;
   margin-right: auto;
+
+  @media(min-width: calc(#{$narrow-screen} + 1px)) {
+    padding-left: 65px;
+    padding-right: 65px;
+  }
 }
 
 .centered-content {
@@ -82,11 +94,11 @@ h4 {
 
 
 p {
-  font-size: 19px;
+  font-size: 16px;
   margin: 10px 0 10px 0;
 
   &.is-large {
-    font-size: 22px;
+    font-size: 19px;
   }
 
   &.is-small {
@@ -146,6 +158,10 @@ hr {
   height: 1px;
   border: none;
   display: block;
+}
+
+.modal-card{
+  max-width:500px;
 }
 
 .modal-card-head,
@@ -261,7 +277,8 @@ input {
   display: flex;
   justify-content: center;
   flex-direction: row;
-  margin: 20px auto;
+  padding: 20px 0 40px;
+  margin: inherit auto;
 
   @media (max-width: 680px) {
     flex-direction: column;
