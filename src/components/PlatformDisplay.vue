@@ -35,6 +35,7 @@
   &>*{
     display:flex;
     flex-direction:row;
+    align-items:flex-start;
   }
 }
 .image-container {
