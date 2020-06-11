@@ -90,7 +90,7 @@
     display:flex;
     flex-direction:row;
     justify-content:flex-start;
-    align-items:center;
+    align-items:flex-start;
 
     span{
       color:$color-brand;
@@ -105,7 +105,10 @@
 }
 
 .connection-content-container{
-      flex-grow:1;
+  flex-grow:1;
+  h4{
+    font-family:"Roboto", sans-serif;
+  }
 }
 
 .platform-connection {
