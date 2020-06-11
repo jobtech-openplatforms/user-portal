@@ -100,6 +100,19 @@ export default class MyConnections extends Vue {
   #lists{
     &>*{
       margin-bottom:60px;
+
+      &:first-child{
+        margin-left:0;
+      }
+
+      &:last-child{
+        margin-right:0;
+      }
+
+      p{
+        margin-top:0;
+      }
+      
     }
     @media (min-width:940px){
 
