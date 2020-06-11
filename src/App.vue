@@ -3,7 +3,7 @@
     <div id="topbar">
       <div id="nav">
         <img class="app-logo-icon" src="./assets/images/open_platforms_logo.svg" />
-        <button v-if="state.isChanged" v-on:click="onSave()" class="button is-primary">Save changes</button>
+        <button v-if="state.isChanged" v-on:click="onSave()" class="button is-primary is-large">Save changes</button>
         <button v-if="state.isLoggedIn" class="button flat" v-on:click="onLogout()">Log out</button>
       </div>
     </div>
